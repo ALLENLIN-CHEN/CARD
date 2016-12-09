@@ -60,7 +60,21 @@ public class Hospital_2Controller {
     @ResponseBody
     public Map<String, Object> getHos_4(@PathVariable String place){
         String[] p = new String[1];
-        p[0]=place;
+        if(place.equals("xiaonanqu")){
+            p[0]="孝南区";
+        }else if(place.equals("xiaochangxian")){
+            p[0]="孝昌县";
+        }else if(place.equals("yingchengshi")){
+            p[0]="应城市";
+        }else if(place.equals("yunmengxian")){
+            p[0]="云梦县";
+        }else if(place.equals("hanchuanshi")){
+            p[0]="汉川市";
+        }else if(place.equals("dawuxian")){
+            p[0]="大悟县";
+        }else if(place.equals("anlushi")){
+            p[0]="安陆市";
+        }
         Map<String, Object> result = new HashMap<String, Object>();
         result.put("type", "HOS_2_4");
         result.put("data", this.hospital_2Service.getHospital_2_4ChartOption(p));
