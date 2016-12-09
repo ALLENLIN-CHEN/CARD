@@ -4,7 +4,10 @@ public class Chartvenn {
 	private Integer  person_num1;
 	private Integer  person_num2;
 	private Integer  person_num3;
-	private Integer  year;
+
+
+
+    private Integer  year;
 	
 	public Integer getperson_num1() {
         return person_num1;
@@ -32,5 +35,8 @@ public class Chartvenn {
     {
         person_num3=person_num;
 
+    }
+    public void setYear(Integer year) {
+        this.year = year;
     }
 }

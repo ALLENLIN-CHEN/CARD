@@ -19,6 +19,10 @@ function getCharts(data) {
 		return getRegisterDepartmentTotal(data);
 	} else if(data.type === 'REGISTER_BAR_DEPARTMENT_PERCENT') {
 		return getRegisterDepartmentPercent(data);
+	} else if(data.type === 'REGISTER_BAR_DOCTOR_TOTAL') {
+		return getRegisterDoctorTotal(data);
+	} else if(data.type === 'REGISTER_BAR_DOCTOR_PERCENT') {
+		return getRegisterDoctorPercent(data);
 	}
 }
 /***********************************/
@@ -615,6 +619,182 @@ function getRegisterDepartmentPercent(data) {
 	            type : 'category',
 	            axisTick : {show: false},
 	            data : departments,
+	            axisLabel:{
+		        	  interval:0,
+                    rotate:30
+                 }
+	        }
+	    ],
+	    yAxis : [
+	        {
+	            type : 'value'
+	        }
+	    ],
+	    series : [
+	        {
+	            name:'top10',
+	            type:'bar',
+	            label: {
+	                normal: {
+	                    show: true,
+	                    formatter: function(v) {
+	                    	return v.value + '%';
+	                    },
+	                    position: 'inside'
+	                }
+	            },
+	            data: percents
+	        }
+	    ]	
+	};
+	
+	return option;
+}
+
+function getRegisterDoctorTotal(data) {
+	var timeLineOptions = [];
+	var props = Object.getOwnPropertyNames(data.rank);
+	var arr;
+	var doctors = [];
+	var allDoctors = {};
+	var allHospitalsAndDepartments = {};
+	
+	for(var index in props) {
+		arr = [];
+		yRank = data.rank[props[index]];
+		allDoctors[props[index]] = [];
+		allHospitalsAndDepartments[props[index]] = [];
+		for(var i = 0; i < yRank.length; i++) {
+			arr.push(yRank[i].sum);
+			if(parseInt(index) === 0) {
+				doctors.push(yRank[i].doctor);
+			}
+			
+			allDoctors[props[index]].push(yRank[i].doctor);
+			allHospitalsAndDepartments[props[index]].push(yRank[i].hospital + '-' + yRank[i].department);
+		}
+		
+		timeLineOptions.push({
+			title : {text: props[index] + '年医院科室医生挂号数量统计'},
+			series: [
+			   {
+				  name: "年总量",
+				  label: {
+	                normal: {
+	                    show: true
+	                }
+				  },
+				  data: arr
+			   }
+			]
+		});
+	}
+	
+	var option = {
+			extended: {hospitalsAndDepartments: allHospitalsAndDepartments, doctors: allDoctors},
+			baseOption: {
+				timeline: {
+					axisType: 'category',
+					autoPlay: true,
+					playInterval: 3000,
+                    orient: 'vertical',
+                    inverse: true,
+                    right: 10,
+                    top: 150,
+                    bottom: 10,
+                    width: 60,
+                    data: ['2010年','2011年','2012年','2013年','2014年','2015年']
+                },
+				title: {
+					text: '医院科室医生挂号数量统计'
+				},
+				tooltip : {
+			        trigger: 'axis',
+			        axisPointer : {            // 坐标轴指示器，坐标轴触发有效
+			            type : 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
+			        }, 
+			        formatter: function(v) {
+			        	var i = v[0].dataIndex;
+			        	return allHospitalsAndDepartments[2010][i] + '-' + allDoctors[2010][i] + "</br>数量: " + timeLineOptions[0].series[0].data[i];
+			        }
+			    },
+				toolbox: {
+					feature: {
+						dataView: {readOnly: true},
+						restore: {},
+						saveAsImage: {}
+					}
+				},
+				xAxis : [
+			       {
+			           type : 'category',
+			           axisTick : {show: false},
+			           axisLabel:{
+			        	  interval:0,
+	                      rotate:30
+	                   },
+			           data : doctors
+			       }
+			    ],
+			    yAxis : [
+			       {
+			           type : 'value'
+			       }
+			    ],
+				grid: {
+			        left: '3%',
+			        right: '7%',
+			        containLabel: true
+			    },
+				calculable: true,
+				series: [
+			         {
+			        	type: 'bar'
+			         }
+				]
+			},
+			options: timeLineOptions
+	};
+	
+	return option;
+}
+
+function getRegisterDoctorPercent(data) {
+	var hospitalsAndDepartments = [];
+	var doctors = [];
+	var percents = [];
+	var arr = [];
+	for(var i = 0; i < data.percent.length; i++) {
+		if(doctors.length >= 10) {
+			break;
+		}
+		arr = data.percent[i].key.split('-');
+		hospitalsAndDepartments.push(arr[0]+'-'+arr[1]);
+		doctors.push(arr[2]);
+		percents.push(data.percent[i].value);
+	}
+	
+	var option = {
+		tooltip : {
+	        trigger: 'axis',
+	        formatter: function(v) {
+	        	var i = v[0].dataIndex;
+	        	return hospitalsAndDepartments[i] + '-' + doctors[i] + "</br>占比: " + percents[i] + '%';
+	        },
+	        axisPointer : {            // 坐标轴指示器，坐标轴触发有效
+	            type : 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
+	        }
+	    },
+	    grid: {
+	        left: '3%',
+	        right: '4%',
+	        containLabel: true
+	    },
+	    xAxis : [
+	         {
+	            type : 'category',
+	            axisTick : {show: false},
+	            data : doctors,
 	            axisLabel:{
 		        	  interval:0,
                     rotate:30

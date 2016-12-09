@@ -19,4 +19,8 @@ public interface RegisterService {
 	public Map<String, Object> getDepartmentTotal();
 	
 	public Map<String, Object> getDepartmentPercent(int startTime, int endTime);
+
+	public Map<String, Object> getDoctorTotal();
+
+	public Map<String, Object> getDoctorPercent(int startTime, int endTime);
 }

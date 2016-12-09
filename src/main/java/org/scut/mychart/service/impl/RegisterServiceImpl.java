@@ -290,4 +290,94 @@ public class RegisterServiceImpl implements RegisterService {
 		return result;
 	}
 
+	@Override
+	public Map<String, Object> getDoctorTotal() {
+		Map<String, Object> result = new HashMap<String, Object>();
+		List<RegisterModel> data = registerMapper.getDoctorTotal(DictionaryString.BUSINESS_REGISTER);
+		Map<String, List<RegisterModel>> total = new HashMap<String, List<RegisterModel>>();
+		String temp = "";
+		for(RegisterModel m : data) {
+			temp = String.valueOf(m.getYear());
+			if(total.containsKey(temp)) {
+				if(total.get(temp).size() >= 10) {
+					continue;
+				}
+				
+				total.get(temp).add(m);
+			}else {
+				total.put(temp, new ArrayList<RegisterModel>());
+				total.get(temp).add(m);
+			}
+		}
+		
+		result.put("rank", total);
+		result.put("type", DictionaryString.REGISTER_BAR_DOCTOR_TOTAL);
+		return result;
+	}
+
+	@Override
+	public Map<String, Object> getDoctorPercent(int startTime, int endTime) {
+		System.setProperty("java.util.Arrays.useLegacyMergeSort", "true");  
+		Map<String, Object> result = new HashMap<String, Object>();
+		String stime = startTime + "-01-01";
+		String etime = endTime + "-12-31";
+		List<RegisterModel> total = registerMapper.getDoctorByTime(DictionaryString.BUSINESS_REGISTER, stime, etime);
+		List<RegisterModel> day = registerMapper.getDoctorMaxByDay(DictionaryString.BUSINESS_REGISTER, stime, etime);
+		Map<String, Double> per = new HashMap<String, Double>();
+		Map<String, Integer> totalMap = new HashMap<String, Integer>();
+		for(RegisterModel m : total) {
+			String key = m.getHospital() + "-" + m.getDepartment() + "-" + m.getDoctor();
+			if(!totalMap.containsKey(key)) {
+				totalMap.put(key, m.getSum());
+			}
+		}
+		
+		DecimalFormat df = new DecimalFormat("#.##");
+		double calPer = 0.0;
+		for(RegisterModel m : day) {
+			String key = m.getHospital() + "-" + m.getDepartment() + "-" + m.getDoctor();
+			if(totalMap.containsKey(key)) {
+				calPer = (double)totalMap.get(key) / (m.getMaxNum() * 365 * (endTime - startTime + 1)) * 100;
+				per.put(key, Double.valueOf(df.format(calPer)));
+			}
+		}
+
+		/**
+		 * 用于排序
+		 */
+		List<Map.Entry<String, Double>> list = new ArrayList<Map.Entry<String,Double>>(per.entrySet());
+		Collections.sort(list, new Comparator<Map.Entry<String, Double>>() {
+
+			@Override
+			public int compare(Entry<String, Double> o1,
+					Entry<String, Double> o2) {
+				if(o1 == null && o2 == null) {  
+				    return 0;  
+				}  
+				if(o1 == null) {  
+				    return -1;  
+				}  
+				if(o2 == null) {  
+				    return 1;  
+				}
+				if(o2.getValue() - o1.getValue() > 0) {
+					return 1;
+				}
+				if(o1.getValue() - o2.getValue() > 0){
+					return -1;
+				}
+				if(o2.getValue() - o1.getValue() == 0) {
+					return 0;
+				}
+				return 0; 
+			}
+		});
+		
+		list = list.subList(0, 11);
+		
+		result.put("type", DictionaryString.REGISTER_BAR_DOCTOR_PERCENT);
+		result.put("percent", list);
+		return result;
+	}
+
 }

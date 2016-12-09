@@ -91,11 +91,29 @@
 	
 	<select id="getDoctorTotal" resultType="org.scut.mychart.model.RegisterModel" useCache="true">
 		<![CDATA[
-			select count(*) as sum, year(operation_time) as year, hospital, department  
+			select count(*) as sum, year(operation_time) as year, hospital, department, doctor
 			from hospital_business 
 			where operation = #{0} 
-			group by year, hospital, department 
+			group by year, hospital, department, doctor
 			order by year,sum desc
+		]]>
+	</select>
+	
+	<select id="getDoctorByTime" resultType="org.scut.mychart.model.RegisterModel" useCache="true">
+		<![CDATA[
+			select hospital, department, doctor, count(*) as sum 
+			from hospital_business where operation = #{0} and operation_time between #{1} and #{2}  
+			group by hospital, department, doctor
+			order by hospital
+		]]>
+	</select>
+	
+	<select id="getDoctorMaxByDay" resultType="org.scut.mychart.model.RegisterModel" useCache="true">
+		<![CDATA[
+			select temp.hospital as hospital, temp.department as department, temp.doctor as doctor, max(temp.dsum) as maxNum 
+			from (select hospital, department, doctor, count(*) as dsum from hospital_business where operation = #{0} and operation_time between #{1} and #{2} group by hospital, department, doctor, operation_time) temp 
+			group by hospital, department, doctor
+			order by hospital
 		]]>
 	</select>
 	

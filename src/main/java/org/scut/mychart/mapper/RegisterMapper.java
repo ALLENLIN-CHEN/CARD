@@ -25,4 +25,8 @@ public interface RegisterMapper {
 	public List<RegisterModel> getDepartmentMaxByDay(String business, String startTime, String endTime);
 	
 	public List<RegisterModel> getDoctorTotal(String business);
+	
+	public List<RegisterModel> getDoctorByTime(String business, String startTime, String endTime);
+
+	public List<RegisterModel> getDoctorMaxByDay(String business, String startTime, String endTime);
 }

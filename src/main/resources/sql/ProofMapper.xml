@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.scut.mychart.mapper.ProofMapper">
+    <!-- 开启二级缓存 -->
+    <cache size="1024" readOnly="true"/>
+    <select id="selectPersonnum3" parameterType="java.util.Map" resultType="org.scut.mychart.model.Chartvenn"
+            statementType="STATEMENT">
+      select
+     count (distinct h1.social_security_card) as person_num3,YEAR (h1.operation_time) as year
+     from hospital_business h1 join hospital_business h2 on h1.social_security_card=h2.social_security_card and YEAR (h1.operation_time)=YEAR (h2.operation_time)
+     where h1.operation="${type1}" and h2.operation="${type2}"
+     group by YEAR (h1.operation_time)
+	 ORDER  by year desc
+  	</select>
+    <select id="selectPersonnum12" parameterType="java.util.Map" resultType="org.scut.mychart.model.Chartvenn"
+            statementType="STATEMENT">
+		select person_num1,person_num2,t21.year as year
+        from
+	  (
+		  select
+     	  count (distinct social_security_card) as person_num1,YEAR (operation_time) as year,operation
+     	  from hospital_business
+		  where operation="${type1}"
+     	  group by YEAR (operation_time),operation
+	    )as t21
+	    join
+	    (
+		  select
+     	  count (distinct social_security_card) as person_num2,YEAR (operation_time) as year,operation
+     	  from hospital_business
+	 	  where  operation="${type2}"
+     	  group by YEAR (operation_time),operation
+	    )as t22
+	    on t21.year =t22.year
+		ORDER  by year desc
+	</select>
+
+
+    <!--<select id="selectChart10Personnum2" parameterType="java.util.Map" resultType="java.lang.Integer"-->
+            <!--statementType="STATEMENT">-->
+
+<!--select *-->
+<!--from-->
+<!--(	select-->
+     <!--count (distinct h1.social_security_card) as num,YEAR (h1.operation_time) as year-->
+     <!--from hospital_business h1 join hospital_business h2 on h1.social_security_card=h2.social_security_card and YEAR (h1.operation_time)=YEAR (h2.operation_time)-->
+     <!--where h1.operation='挂号' and h2.operation='特殊医疗待遇申请'-->
+     <!--group by YEAR (h1.operation_time))-->
+<!--as t1-->
+<!--join (-->
+ 	<!--select num1,num2,t21.year as year,t21.operation as o1,t22.operation as o2 from-->
+	<!--(-->
+		<!--select-->
+     	<!--count (distinct social_security_card) as num1,YEAR (operation_time) as year,operation-->
+     	<!--from hospital_business-->
+		<!--where operation='挂号'-->
+     	<!--group by YEAR (operation_time),operation-->
+	<!--)as t21-->
+	<!--join-->
+	<!--(-->
+		<!--select-->
+     	<!--count (distinct social_security_card) as num2,YEAR (operation_time) as year,operation-->
+     	<!--from hospital_business-->
+	 	<!--where  operation='特殊医疗待遇申请'-->
+     	<!--group by YEAR (operation_time),operation-->
+	<!--)as t22-->
+	<!--on t21.year =t22.year-->
+
+<!--)as t2-->
+
+<!--on t1.year=t2.year-->
+	<!--</select>-->
+    <!--<select id="selectChart10Personnum3" parameterType="java.util.Map" resultType="java.lang.Integer"-->
+            <!--statementType="STATEMENT">-->
+
+        <!--SELECT count(distinct ${table1}.aac001)-->
+        <!--FROM ${table1}-->
+        <!--INNER JOIN ${table2}-->
+        <!--ON ${table1}.aac001=${table2}.aac001-->
+
+	<!--</select>-->
+</mapper>
