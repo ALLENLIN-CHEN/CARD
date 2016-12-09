@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.scut.mychart.mapper.ChartExpenseMapper">
+	<!-- 开启二级缓存 -->
+	<cache size="1024" readOnly="true" />
+	<select id="selectChartExpenseBar" parameterType="java.util.Map" resultType="org.scut.mychart.model.ChartExpense" statementType="STATEMENT">
+		select year(operation_time) as year,sex as sex,count(sex) as person_num
+		from hospital_business a join person b
+		where operation='医疗费用报销申请' and
+		  a.social_security_card=b.social_security_card
+		group by sex,year
+		order by year,sex;
+	</select>
+
+	<select id="selectChartExpenseAreaCoverage" resultType="org.scut.mychart.model.ChartExpense" useCache="true">
+		<![CDATA[
+			select year(operation_time) as year, area as area, count(*) as person_num
+			from hospital_business
+			where operation = '医疗费用报销申请'
+			group by year, area
+			order by year
+		]]>
+	</select>
+
+	<select id="getAgeRange" resultType="org.scut.mychart.model.ChartExpense" useCache="true">
+		<![CDATA[
+			SELECT count(*) as person_num,year(operation_time) as year,year(birthday) as birth
+			FROM hospital_business join person on hospital_business.social_security_card=person.social_security_card
+			where operation = '医疗费用报销申请'
+			group by birth,year
+			order by year,birth
+		]]>
+	</select>
+
+	<select id="getHospitalTotal" resultType="org.scut.mychart.model.ChartExpense" useCache="true">
+		<![CDATA[
+			select count(*) as person_num, year(operation_time) as year, hospital
+			from hospital_business where operation = '医疗费用报销申请'
+			group by year, hospital
+			order by year,person_num desc
+		]]>
+	</select>
+
+	<select id="getDepartmentTotal" resultType="org.scut.mychart.model.ChartExpense" useCache="true">
+		<![CDATA[
+			select count(*) as person_num, year(operation_time) as year, hospital, department
+			from hospital_business
+			where operation = '医疗费用报销申请'
+			group by year, hospital, department
+			order by year,person_num desc
+		]]>
+	</select>
+</mapper>

@@ -4,9 +4,7 @@
  var timer = null; //主要用于仪表盘等定时器的句柄，每当新的展示需要重置操作
  var isInit = true; //用于初始化处理单独显示的div宽高获取不到的情况
  var isAreaChange = false; //用于判断是否切换了地区
- /**
-  * Created by linqidi on 2016/12/9.
-  */
+
 $(function() {
 	hideLoading();
 	
@@ -173,7 +171,7 @@ function handleCharts(data) {
 	//非挂号年龄段分析时进行timeline函数的解绑
 	myChart.off('timelinechanged',changeLegendShowByTimeLine);
 	
-	if(data.type === 'TSYL_GAUGE') {
+	if(data.type === 'EXPENSE_GAUGE') {
 		var dataIndex = 1; //用于记录数据的展示索引
 		var year = 2011;
 		var area = $('.area-wrap .btn.active').html();
@@ -202,20 +200,20 @@ function handleCharts(data) {
 			year++;
 			myChart.setOption(option, true);
 		}, 2000);
-	} else if(data.type === 'TSYL_FUNNEL') {
+	} else if(data.type === 'EXPENSE_FUNNEL') {
 		myChart.on('timelinechanged',changeLegendShowByTimeLine);
-	} else if(data.type === 'TSYL_BAR_HOSPITAL_TOTAL') {
+	} else if(data.type === 'EXPENSE_BAR_HOSPITAL_TOTAL') {
 		myChart.on('timelinechanged',changeLegendShowByTimeLine);
-	} else if(data.type === 'TSYL_BAR_DEPARTMENT_TOTAL') {
+	} else if(data.type === 'EXPENSE_BAR_DEPARTMENT_TOTAL') {
 		myChart.on('timelinechanged',changeLegendShowByTimeLine);
-	} 
+	}
 }
 
 /**
  * 用于处理时间轴的为0的legend不显示的情况
  */
 function changeLegendShowByTimeLine(timeLineData) {
-	if(chartType === 'TSYL_FUNNEL') {
+	if(chartType === 'EXPENSE_FUNNEL') {
 		var legends = ['0-6岁（儿童）', '7-40（青少年）', '41-65（中年）', '66以上（老年）'];
 		var setting = {};
 		var index = timeLineData.currentIndex;
@@ -229,13 +227,13 @@ function changeLegendShowByTimeLine(timeLineData) {
 		}
 		option.baseOption.legend.selected = setting;
 		myChart.setOption(option);
-	} else if(chartType === 'TSYL_BAR_HOSPITAL_TOTAL') {
+	} else if(chartType === 'EXPENSE_BAR_HOSPITAL_TOTAL') {
 		var legends = [];
 		var index = timeLineData.currentIndex;
 		legends = option.extended[2010 + index];
 		option.baseOption.xAxis[0].data = legends;
 		myChart.setOption(option);
-	} else if(chartType === 'TSYL_BAR_DEPARTMENT_TOTAL') {
+	} else if(chartType === 'EXPENSE_BAR_DEPARTMENT_TOTAL') {
 		var legends = [];
 		var index = timeLineData.currentIndex + 2010;
 		legends = option.extended.departments[index];
@@ -245,7 +243,7 @@ function changeLegendShowByTimeLine(timeLineData) {
 			return option.extended.hospitals[index][i] + "-" + option.extended.departments[index][i] + "</br>数量: " + option.options[index-2010].series[0].data[i];
 		};
 		myChart.setOption(option);
-	} 
+	}
 }
 
 /*** loading动画 ***/

@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.scut.mychart.mapper.Hospital_2Mapper">
+	<!-- 开启二级缓存 -->
+	<cache size="1024" readOnly="true" />
+	<select id="selectHospital_2_2" parameterType="java.util.Map" resultType="org.scut.mychart.model.Hospital_2" statementType="STATEMENT">
+		select year(operation_time) as "year",sex as "sex",count(distinct person.social_security_card) as "person_num"
+		from hospital_business inner join person
+		on hospital_business.social_security_card=person.social_security_card
+		where operation = "就医服务"
+		group by year,sex
+		order by year,sex
+	</select>
+	<select id="selectHospital_2_4" parameterType="java.util.Map" resultType="org.scut.mychart.model.Hospital_2" statementType="STATEMENT">
+        select year(operation_time) as "year",count(distinct hospital_business.social_security_card) as "person_num",count(person.social_security_card) as "person_sum"
+		from hospital_business inner join person
+		on hospital_business.social_security_card=person.social_security_card and hospital_business.area = person.area
+		where operation = "就医服务" and hospital_business.area = "${address}"
+		group by year
+		order by year
+	</select>
+	<select id="selectHospital_2_5" parameterType="java.util.Map" resultType="org.scut.mychart.model.Hospital_2" statementType="STATEMENT">
+		select year(operation_time) as "year",
+		case when (year(operation_time)-year(birthday)>65) then "老年"
+		when (year(operation_time)-year(birthday)>40) then "中年"
+		when (year(operation_time)-year(birthday)>6) then "青年"
+		else "儿童" end as "age",
+		count(distinct person.social_security_card) as "person_num"
+		from hospital_business inner join person
+		on hospital_business.social_security_card=person.social_security_card
+		where operation = "就医服务"
+		group by year,age
+		order by year,age
+	</select>
+	<select id="selectHospital_2_6810" parameterType="java.util.Map" resultType="org.scut.mychart.model.Hospital_2" statementType="STATEMENT">
+		select year(operation_time) as "year"${where},count(*) as hospital_num
+		from hospital_business
+		where operation = "就医服务"
+		group by year${group}
+		order by year,hospital_num DESC
+	</select>
+	<select id="selectHospital_2_7911" parameterType="java.util.Map" resultType="org.scut.mychart.model.Hospital_2" statementType="STATEMENT">
+		select ${type},A.hospital_num as hospital_sim,B.hospital_num as hospital_sum
+		from(
+		select ${where},operation_time as day,count(*) as hospital_num,
+		ROW_NUMBER() over(partition by ${where} order by count(*) DESC) rownum
+		from hospital_business
+		where operation = "就医服务" ${date}
+		group by ${where},day) as A
+		inner join
+		(select ${where},count(*) as hospital_num
+		from hospital_business
+		where operation = "就医服务" ${date}
+		group by ${where}
+		order by hospital_num DESC) as B
+		on ${join}
+		where A.rownum=1;
+	</select>
+</mapper>

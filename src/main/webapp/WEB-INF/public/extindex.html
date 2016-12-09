@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8"/>
+    <title>社保大数据业务平台</title>
+
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <!-- Bootstrap core CSS -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom styles for this template -->
+
+    <link rel="stylesheet" href="css/layout.css" type="text/css" media="screen" />
+    <!--[if lt IE 9]>
+    <link rel="stylesheet" href="css/ie.css" type="text/css" media="screen" />
+    <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+	
+	<!-- 用于图表展示与控制样式 -->
+	<link href="css/extindex.css" rel="stylesheet">
+	<!-- 滚动条样式 -->
+	<link href="css/jquery.mCustomScrollbar.min.css" rel="stylesheet">
+
+	<script type="text/javascript" src="js/jquery-1.7.2.min.js"></script>
+	<script type="text/javascript" src="js/mCustomScrollbar/jquery.mCustomScrollbar.concat.min.js"></script>
+    <script src="js/hideshow.js" type="text/javascript"></script>
+    <script src="js/jquery.tablesorter.min.js" type="text/javascript"></script>
+    <script type="text/javascript" src="js/jquery.equalHeight.js"></script>
+    </script>
+
+<!--     <script type="text/javascript" src="http://cdn.hcharts.cn/jquery/jquery-1.8.3.min.js"></script> -->
+<!--     <script type="text/javascript" src="http://cdn.hcharts.cn/highcharts/highcharts.js"></script> -->
+<!--     <script type="text/javascript" src="http://cdn.hcharts.cn/highcharts/exporting.js"></script> -->
+    <script type="text/javascript" src="js/analysis0.js"></script>
+    <script type="text/javascript" src="js/analysis1.js"></script>
+    <script type="text/javascript" src="js/analysis2.js"></script>
+    <script type="text/javascript" src="js/analysis3.js"></script>
+    <script type="text/javascript" src="js/analysis4.js"></script>
+    <script type="text/javascript" src="js/analysis5.js"></script>
+    <script type="text/javascript" src="js/analysis6.js"></script>
+    <script type="text/javascript" src="js/analysis7.js"></script>
+    <script type="text/javascript" src="js/analysis8.js"></script>
+</head>
+<body>
+	<div class="navbar navbar-fixed-top navbar-inverse" >
+	    <div class="container">
+	        <a id="logo" href="/">社保大数据业务平台</a>
+	        <nav>
+	            <ul class="nav navbar-nav pull-right">
+	                <li><a href="https://rubytutorial-jungieve.c9users.io/">主页</a></li>
+	                <li><a href="https://rubytutorial-jungieve.c9users.io/help">帮助</a></li>
+	                <li><a href="/ETL/html/index.html">预处理</a></li>
+	                <li><a href="/olap/">OLAP分析</a></li>
+	                <li><a href="/openreports/">报表展示</a></li>
+	                <li><a href="/mychart/test.html">业务样例</a></li>
+	                <li><a href="https://rubytutorial-jungieve.c9users.io/users">其他成员</a></li>
+	                <li class="dropdown">
+	                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">账户</a>
+	                </li>
+	            </ul>
+	        </nav>
+	    </div>
+	</div>
+	
+	<!-- 图表展示与控制容器 -->
+	<div class="scut-container">
+			<div class="left-content">
+				<div class="item active" data-id="theme1"  data-index="1">
+					<label>异地就医申请统计</label>
+				</div>
+				<div class="sub-1 sub-item" style="display:block;">
+					<div class="sub-item-wrap">
+						<i class="icon"></i>
+						<div class="type" data-url="charts/external1">异地就医申请各年份男女人员数量柱状图</div>
+					</div>
+					<div class="sub-item-wrap">
+						<i class="icon"></i>
+						<div class="type" data-url="charts/external2">异地就医申请人数随时间变化折线图</div>
+					</div>
+					<div class="sub-item-wrap">
+						<i class="icon"></i>
+						<div class="type" data-url="charts/external3/xiaonanqu">异地就医申请覆盖率分析</div>
+					</div>
+					<div class="sub-item-wrap">
+						<i class="icon"></i>
+						<div class="type" data-url="charts/external4">异地就医申请漏斗图分析</div>
+					</div>
+					<div class="sub-item-wrap">
+						<i class="icon"></i>
+						<div class="type" data-url="charts/external5/2010">医院的异地就医申请数量LOW10</div>
+					</div>
+					<div class="sub-item-wrap">
+						<i class="icon"></i>
+						<div class="type" data-url="charts/external6/2010">科室的异地就医申请数量LOW10</div>
+					</div>
+					<div class="sub-item-wrap">
+						<i class="icon"></i>
+						<div class="type" data-url="charts/external7/2010">医生的异地就医申请数量LOW10</div>
+					</div>
+				</div>
+
+			</div>
+
+			<div class="right-content">
+				<div class="area-wrap">
+					<button type="button" class="btn btn-primary active" data-url="charts/external3/xiaonanqu">孝南区</button>
+					<button type="button" class="btn btn-primary" data-url="charts/external3/xiaochangxian">孝昌县</button>
+					<button type="button" class="btn btn-primary" data-url="charts/external3/yingchengshi">应城市</button>
+					<button type="button" class="btn btn-primary" data-url="charts/external3/yunmengxian">云梦县</button>
+					<button type="button" class="btn btn-primary" data-url="charts/external3/hanchuanshi">汉川市</button>
+					<button type="button" class="btn btn-primary" data-url="charts/external3/dawuxian">大悟县</button>
+					<button type="button" class="btn btn-primary" data-url="charts/external3/anlushi">安陆市</button>
+				</div>
+				<div class="area-wrap1">
+					<button type="button" class="btn btn-primary active" data-url="charts/external5/2010">2010年</button>
+					<button type="button" class="btn btn-primary" data-url="charts/external5/2011">2011年</button>
+					<button type="button" class="btn btn-primary" data-url="charts/external5/2012">2012年</button>
+					<button type="button" class="btn btn-primary" data-url="charts/external5/2013">2013年</button>
+					<button type="button" class="btn btn-primary" data-url="charts/external5/2014">2014年</button>
+					<button type="button" class="btn btn-primary" data-url="charts/external5/2015">2015年</button>
+				</div>
+				<div class="area-wrap2">
+					<button type="button" class="btn btn-primary active" data-url="charts/external6/2010">2010年</button>
+					<button type="button" class="btn btn-primary" data-url="charts/external6/2011">2011年</button>
+					<button type="button" class="btn btn-primary" data-url="charts/external6/2012">2012年</button>
+					<button type="button" class="btn btn-primary" data-url="charts/external6/2013">2013年</button>
+					<button type="button" class="btn btn-primary" data-url="charts/external6/2014">2014年</button>
+					<button type="button" class="btn btn-primary" data-url="charts/external6/2015">2015年</button>
+				</div>
+				<div class="area-wrap3">
+					<button type="button" class="btn btn-primary active" data-url="charts/external7/2010">2010年</button>
+					<button type="button" class="btn btn-primary" data-url="charts/external7/2011">2011年</button>
+					<button type="button" class="btn btn-primary" data-url="charts/external7/2012">2012年</button>
+					<button type="button" class="btn btn-primary" data-url="charts/external7/2013">2013年</button>
+					<button type="button" class="btn btn-primary" data-url="charts/external7/2014">2014年</button>
+					<button type="button" class="btn btn-primary" data-url="charts/external7/2015">2015年</button>
+				</div>
+
+				<div class="single">
+					<div id="chartMain"></div>
+				</div>
+
+				<div class="spinner">
+					<div class="rect1"></div>
+					<div class="rect2"></div>
+					<div class="rect3"></div>
+					<div class="rect4"></div>
+					<div class="rect5"></div>
+				</div>
+
+			</div>
+			
+			<!--<div class="right-content">
+				<div class="multi">
+					<div id="chart1" class="multi-chart"></div>
+					<div id="chart2" class="multi-chart"></div>
+					<div id="chart3" class="multi-chart"></div>
+					<div id="chart4" class="multi-chart"></div>
+					<div id="chart5" class="multi-chart"></div>
+					<div id="chart6" class="multi-chart"></div>
+				</div>
+				
+
+			</div>-->
+
+		</div>
+	
+	<script src="js/echarts-2.2.7/build/dist/echarts.js"></script>
+	<!-- 引入 ECharts-X 主文件 -->
+	<script src="js/echarts-x-0.2.0/build/dist/echarts-x.js"></script>
+	<script type="text/javascript" src="js/data.js"></script>
+	<script type="text/javascript" src="js/ext.js"></script>
+</body>
+
+</html>

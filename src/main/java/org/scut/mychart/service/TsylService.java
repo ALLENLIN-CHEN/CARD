@@ -3,7 +3,7 @@ package org.scut.mychart.service;
 import java.util.Map;
 
 /**
- * Created by linqidi on 2016/12/8.
+ * Created by linqidi on 2016/12/9.
  */
 public interface TsylService {
     public Map<String, Object> getCountByGender();

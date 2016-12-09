@@ -1,6 +1,9 @@
 /**
  * 用于处理不同类型的图表
  */
+/**
+ * Created by linqidi on 2016/12/9.
+ */
 function getCharts(data) {
 	if (data.type === 'TSYL_BAR_X') {
 		return getTsylBarX(data);

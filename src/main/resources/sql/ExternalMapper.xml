@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.scut.mychart.mapper.ExternalMapper">
+	<!-- 开启二级缓存 -->
+	<cache size="1024" readOnly="true" />
+	<select id="selectExternal1" parameterType="java.util.Map" resultType="org.scut.mychart.model.External1" statementType="STATEMENT">
+		SELECT count(*) as "numsex",
+		year(operation_time) as "year",sex as "sex"
+		FROM hospital_business join person on hospital_business.social_security_card=person.social_security_card
+		where operation="异地就医申请"
+		group by sex,year order by year,sex
+	</select>
+	<select id="selectExternal3" parameterType="java.util.Map" resultType="org.scut.mychart.model.External3" statementType="STATEMENT">
+        select count(person.social_security_card)*4 as "num",
+        count(distinct person.social_security_card) as "numgu",
+        person.area as "area",year(operation_time) as "year"
+         from hospital_business join person on hospital_business.social_security_card=person.social_security_card
+         where operation='异地就医申请' and person.area="${area}"
+         group by year,area order by year
+	</select>
+	<select id="selectExternal4" resultType="org.scut.mychart.model.External4" statementType="STATEMENT">
+		select count(distinct person.social_security_card) as "num",
+		case when (year(operation_time)-year(birthday))&lt;6 then "童年"
+		when (year(operation_time)-year(birthday))&lt;40 then "青少年"
+		when (year(operation_time)-year(birthday))&lt;65 then "中年"
+		else "老年" end as "age",
+        year(operation_time) as "year"
+        from hospital_business join person on hospital_business.social_security_card=person.social_security_card
+        where operation='异地就医申请'
+        group by age,year
+        order by year,age
+	</select>
+	<select id="selectExternal5" parameterType="java.util.Map" resultType="org.scut.mychart.model.External5" statementType="STATEMENT">
+		select count(*) as "num",hospital as "hospital",year(operation_time) as "year"
+        from hospital_business
+		where operation="异地就医申请" and CAST (year(operation_time) as VARCHAR)="${year}"
+		group by hospital,year
+		order by year,num limit 10
+	</select>
+	<select id="selectExternal6" parameterType="java.util.Map" resultType="org.scut.mychart.model.External6" statementType="STATEMENT">
+		select count(*) as "num",hospital as "hospital",department as "department"
+        from hospital_business
+		where operation="异地就医申请" and CAST (year(operation_time) as VARCHAR)="${year}"
+		group by hospital,department
+		order by num limit 10
+	</select>
+	<select id="selectExternal7" parameterType="java.util.Map" resultType="org.scut.mychart.model.External7" statementType="STATEMENT">
+		select count(*) as "num",hospital as "hospital",department as "department",doctor as "doctor"
+		from hospital_business
+		where operation="异地就医申请" and CAST (year(operation_time) as VARCHAR)="${year}"
+		group by hospital,department,doctor
+		order by num limit 10
+	</select>
+</mapper>

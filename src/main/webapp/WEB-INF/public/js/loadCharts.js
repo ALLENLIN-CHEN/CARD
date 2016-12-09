@@ -7,8 +7,10 @@ var isInit = true; //用于初始化处理单独显示的div宽高获取不到�
 
 //初始化设置
 $(function() {
-	
+
+	//myChart = echart.init(document.getElementById('chartMain'));
 	$(".tablesorter").tablesorter();
+	$('.area-wrap').hide();
 
 	//When page loads...
 	$(".tab_content").hide(); //Hide all content
@@ -46,19 +48,122 @@ $(function() {
 			$('.sub-' + self.data('index')).slideToggle();
 		}
 		
-		setMultiCharts();
+	//	setMultiCharts();
 	});
 	
 	//子主题的点击
 	$(document).on('click', '.sub-item-wrap .type', function() {
 		//清除定时器
 		clearInterval(timer);
+		//myChart.dispose();
+		myChart = echart.init(document.getElementById('chartMain'));
+		if(isInit) {
+			//这样写是为了能够让echarts能够得到所设置的width，而不是使用默认的width。 设置完毕后进行hide隐藏掉
+			$('.right-content .single').css('visibility','visible').hide();
+		}
+
+		showLoading();
 
 		$('.sub-item-wrap.active').removeClass('active');
 		$(this).parent().addClass('active');
+
+		if(!$('.area-wrap').is(':hidden')) {
+			$('.area-wrap').hide();
+			$('.area-wrap1').hide();
+			$('.area-wrap2').hide();
+			$('.area-wrap3').hide();
+		}
+
+
+
 		var param = {};
 		param.url = $(this).data('url');
+		if(param.url.indexOf('external3') >= 0) {
+			$('.area-wrap').show();
+			$('.area-wrap1').hide();
+			$('.area-wrap2').hide();
+			$('.area-wrap3').hide();
+		}
+		if(param.url.indexOf('external5') >= 0) {
+			$('.area-wrap').hide();
+			$('.area-wrap1').show();
+			$('.area-wrap2').hide();
+			$('.area-wrap3').hide();
+		}
+		if(param.url.indexOf('external6') >= 0) {
+			$('.area-wrap').hide();
+			$('.area-wrap1').hide();
+			$('.area-wrap2').show();
+			$('.area-wrap3').hide();
+		}
+		if(param.url.indexOf('external7') >= 0) {
+			$('.area-wrap').hide();
+			$('.area-wrap1').hide();
+			$('.area-wrap2').hide();
+			$('.area-wrap3').show();
+		}
 		getAjax(param);
+	});
+
+	/**
+	 * 用于设定地区按钮的选择
+	 */
+	$(document).on('click', '.area-wrap .btn', function() {
+		if(!$(this).hasClass('active')) {
+			$('.area-wrap .btn.active').removeClass('active');
+			$(this).addClass('active');
+
+			var param = {};
+			param.url = $(this).data('url');
+			getAjax(param);
+
+			isAreaChange = true;
+		}
+	});
+	/**
+	 * 用于设定时间1按钮的选择
+	 */
+	$(document).on('click', '.area-wrap1 .btn', function() {
+		if(!$(this).hasClass('active')) {
+			$('.area-wrap1 .btn.active').removeClass('active');
+			$(this).addClass('active');
+
+			var param = {};
+			param.url = $(this).data('url');
+			getAjax(param);
+
+			isAreaChange = true;
+		}
+	});
+	/**
+	 * 用于设定时间2按钮的选择
+	 */
+	$(document).on('click', '.area-wrap2 .btn', function() {
+		if(!$(this).hasClass('active')) {
+			$('.area-wrap2 .btn.active').removeClass('active');
+			$(this).addClass('active');
+
+			var param = {};
+			param.url = $(this).data('url');
+			getAjax(param);
+
+			isAreaChange = true;
+		}
+	});
+	/**
+	 * 用于设定时间3按钮的选择
+	 */
+	$(document).on('click', '.area-wrap3 .btn', function() {
+		if(!$(this).hasClass('active')) {
+			$('.area-wrap3 .btn.active').removeClass('active');
+			$(this).addClass('active');
+
+			var param = {};
+			param.url = $(this).data('url');
+			getAjax(param);
+
+			isAreaChange = true;
+		}
 	});
 	
 /****     结束配置    ****/
@@ -420,22 +525,22 @@ function hideLoading() {
 // 路径配置
 require.config({
 	paths : {
-		'echarts': 'http://echarts.baidu.com/build/dist',
+		'echarts': 'js/echarts-2.2.7/build/dist',
         'echarts-x': 'js/echarts-x-0.2.0/build/dist'
 	}
 });
 
-require([ 'echarts', 'echarts/chart/gauge', 'echarts/chart/bar', 
+require([ 'echarts', 'echarts/chart/gauge', 'echarts/chart/bar',
           'echarts/chart/pie', 'echarts/chart/line', 'echarts/chart/funnel',
           'echarts/chart/wordCloud', 'echarts/chart/venn', 'echarts/chart/radar',
-          
+
           'echarts/chart/map'   // 按需加载所需图表，如需动态类型切换功能，别忘了同时加载相应图表
-          ], 
+          ],
 function(ec) {
-	
+
 	//将echart的实例保存起来用于下次更换图表的再次初始化
 	echart = ec;
-	
+
 	//获取地图数据
 	mapGeoData = require('echarts/util/mapData/params');
 	mapGeoData.params.jiangmen = {
@@ -446,6 +551,6 @@ function(ec) {
           });
       }
 	};
-	
-	setMultiCharts();
+
+	//setMultiCharts();
 });

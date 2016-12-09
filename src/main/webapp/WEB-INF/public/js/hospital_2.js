@@ -1,17 +1,15 @@
- var myChart;
- var option;
- var chartType;
- var timer = null; //主要用于仪表盘等定时器的句柄，每当新的展示需要重置操作
- var isInit = true; //用于初始化处理单独显示的div宽高获取不到的情况
- var isAreaChange = false; //用于判断是否切换了地区
- /**
-  * Created by linqidi on 2016/12/9.
-  */
+var myChart;
+var option;
+var chartType;
+var timer = null; //主要用于仪表盘等定时器的句柄，每当新的展示需要重置操作
+var isInit = true; //用于初始化处理单独显示的div宽高获取不到的情况
+var isAreaChange = false; //用于判断是否切换了地区
+
 $(function() {
 	hideLoading();
-	
+
 	myChart = echarts.init(document.getElementById('chartMain'));
-/***********************************************************************************************************/	
+	/***********************************************************************************************************/
 	$(".tablesorter").tablesorter();
 
 	//When page loads...
@@ -32,13 +30,13 @@ $(function() {
 	});
 
 	$('.column').equalHeight();
-/***********************************************************************************************************/
-	
+	/***********************************************************************************************************/
+
 	//主题点击
 	$('.item').on('click', function() {
 		//清除定时器
 		clearInterval(timer);
-		
+
 		$('.right-content .single').hide();
 		$('.right-content .multi').show();
 		$('.sub-item-wrap.active').removeClass('active');
@@ -49,10 +47,10 @@ $(function() {
 			self.addClass('active');
 			$('.sub-' + self.data('index')).slideToggle();
 		}
-		
-	//	setMultiCharts();
+
+		//	setMultiCharts();
 	});
-	
+
 	$(document).on('click', '.sub-item-wrap .type', function() {
 		//清除定时器
 		clearInterval(timer);
@@ -61,21 +59,20 @@ $(function() {
 		if(isInit) {
 			//这样写是为了能够让echarts能够得到所设置的width，而不是使用默认的width。 设置完毕后进行hide隐藏掉
 			$('.right-content .single').css('visibility','visible').hide();
-			isInit = !isInit;
 		}
-		
+
 		showLoading();
-		
+
 		$('.sub-item-wrap.active').removeClass('active');
 		$(this).parent().addClass('active');
-		
+
 		if(!$('.area-wrap').is(':hidden')) {
 			$('.area-wrap').hide();
 		}
 		if(!$('.time_wrap').is(':hidden')) {
 			$('.time_wrap').hide();
 		}
-		
+
 		if(!$(this).data('no-init')) {
 			var url = $(this).data('url');
 			$.ajax({
@@ -93,9 +90,9 @@ $(function() {
 			hideLoading();
 			$('.time_wrap').show();
 		}
-		
+
 	});
-	
+
 	/**
 	 * 用于设定地区按钮的选择
 	 */
@@ -103,17 +100,21 @@ $(function() {
 		if(!$(this).hasClass('active')) {
 			$('.area-wrap .btn.active').removeClass('active');
 			$(this).addClass('active');
-			
+
+			var param = {};
+			param.url = $(this).data('url');
+			getAjax(param);
+
 			isAreaChange = true;
 		}
 	});
-	
+
 	/**
 	 * 绑定时间查询的确定按钮
 	 */
 	$(document).on('click', '.time_wrap .search', function() {
 		showLoading();
-		
+
 		var startTime = $('.startTime').val() - 0;
 		var endTime = $('.endTime').val() - 0;
 		if(endTime < startTime) {
@@ -121,14 +122,14 @@ $(function() {
 			hideLoading();
 			return;
 		}
-		
+
 		var url = $('.sub-item-wrap.active .type').data('url');
 		var params = {
-				startTime: startTime,
-				endTime: endTime
+			startTime: startTime,
+			endTime: endTime
 		}
-		
-		
+
+
 		$.ajax({
 			type: 'GET',
 			url: url,
@@ -142,42 +143,52 @@ $(function() {
 			}
 		});
 	});
-	
-	
-	
+
+
+
 	/*** 配置滚动条 ***/
 	$(window).on("load",function(){
 		$(".left-content").mCustomScrollbar({
 			autoHideScrollbar:true,
 			theme:"dark-thick"
 		});
-		
+
 	});
 	/*** 结束配置 ***/
 });
+
+/**
+ * 用于处理不同类型的图表
+ */
+function getCharts(data) {
+	if(data.type == "HOS_2_4"){
+		$('.area-wrap').show();
+	}
+	return data.data;
+}
 
 /**
  * 用于展示echarts图表
  */
 function handleCharts(data) {
 	$('.right-content .single').show();
-	
+
 	chartType = data.type;
-	
+
 	option = getCharts(data);
-	
-	myChart.setOption(option);
+
+	myChart.setOption(eval('('+ option+')'));
 
 	hideLoading();
-	
+
 	//非挂号年龄段分析时进行timeline函数的解绑
 	myChart.off('timelinechanged',changeLegendShowByTimeLine);
-	
-	if(data.type === 'TSYL_GAUGE') {
+
+	if(data.type === 'REGISTER_GAUGE') {
 		var dataIndex = 1; //用于记录数据的展示索引
 		var year = 2011;
 		var area = $('.area-wrap .btn.active').html();
-		
+
 		timer = setInterval(function() {
 			if(isAreaChange) {
 				area = $('.area-wrap .btn.active').html();
@@ -188,11 +199,11 @@ function handleCharts(data) {
 			if(dataIndex >= data.coverage[area].length) {
 				dataIndex = 0;
 			}
-			
+
 			if(year >= 2015) {
 				year = 2010;
 			}
-			
+
 			option.series[0].data[0] = {
 				value : data.coverage[area][dataIndex],
 				name : area
@@ -202,20 +213,22 @@ function handleCharts(data) {
 			year++;
 			myChart.setOption(option, true);
 		}, 2000);
-	} else if(data.type === 'TSYL_FUNNEL') {
+	} else if(data.type === 'REGISTER_FUNNEL') {
 		myChart.on('timelinechanged',changeLegendShowByTimeLine);
-	} else if(data.type === 'TSYL_BAR_HOSPITAL_TOTAL') {
+	} else if(data.type === 'REGISTER_BAR_HOSPITAL_TOTAL') {
 		myChart.on('timelinechanged',changeLegendShowByTimeLine);
-	} else if(data.type === 'TSYL_BAR_DEPARTMENT_TOTAL') {
+	} else if(data.type === 'REGISTER_BAR_DEPARTMENT_TOTAL') {
 		myChart.on('timelinechanged',changeLegendShowByTimeLine);
-	} 
+	} else if(data.type === 'REGISTER_BAR_DOCTOR_TOTAL') {
+		myChart.on('timelinechanged',changeLegendShowByTimeLine);
+	}
 }
 
 /**
  * 用于处理时间轴的为0的legend不显示的情况
  */
 function changeLegendShowByTimeLine(timeLineData) {
-	if(chartType === 'TSYL_FUNNEL') {
+	if(chartType === 'REGISTER_FUNNEL') {
 		var legends = ['0-6岁（儿童）', '7-40（青少年）', '41-65（中年）', '66以上（老年）'];
 		var setting = {};
 		var index = timeLineData.currentIndex;
@@ -229,13 +242,13 @@ function changeLegendShowByTimeLine(timeLineData) {
 		}
 		option.baseOption.legend.selected = setting;
 		myChart.setOption(option);
-	} else if(chartType === 'TSYL_BAR_HOSPITAL_TOTAL') {
+	} else if(chartType === 'REGISTER_BAR_HOSPITAL_TOTAL') {
 		var legends = [];
 		var index = timeLineData.currentIndex;
 		legends = option.extended[2010 + index];
 		option.baseOption.xAxis[0].data = legends;
 		myChart.setOption(option);
-	} else if(chartType === 'TSYL_BAR_DEPARTMENT_TOTAL') {
+	} else if(chartType === 'REGISTER_BAR_DEPARTMENT_TOTAL') {
 		var legends = [];
 		var index = timeLineData.currentIndex + 2010;
 		legends = option.extended.departments[index];
@@ -245,8 +258,29 @@ function changeLegendShowByTimeLine(timeLineData) {
 			return option.extended.hospitals[index][i] + "-" + option.extended.departments[index][i] + "</br>数量: " + option.options[index-2010].series[0].data[i];
 		};
 		myChart.setOption(option);
-	} 
+	} else if(chartType === 'REGISTER_BAR_DOCTOR_TOTAL') {
+		var legends = [];
+		var index = timeLineData.currentIndex + 2010;
+		legends = option.extended.doctors[index];
+		option.baseOption.xAxis[0].data = legends;
+		option.baseOption.tooltip.formatter = function(v) {
+			var i = v[0].dataIndex;
+			return option.extended.hospitalsAndDepartments[index][i] + '-' + option.extended.doctors[index][i] + "</br>数量: " + option.options[index-2010].series[0].data[i];
+		};
+		myChart.setOption(option);
+	}
 }
+
+/*** 设置进行ajax访问请求 ***/
+function getAjax(param) {
+	showLoading();
+
+	$.get(param.url, function (res) {
+		handleCharts(res);
+		hideLoading();
+	});
+}
+/*** 结束设置 ***/
 
 /*** loading动画 ***/
 //加载loading

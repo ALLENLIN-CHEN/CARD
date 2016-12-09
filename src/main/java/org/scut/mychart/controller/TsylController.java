@@ -8,7 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 /**
- * Created by linqidi on 2016/12/8.
+ * Created by linqidi on 2016/12/9.
  */
 @Controller
 @RequestMapping(value="/charts/tsyl", produces="application/json;charset=UTF-8")

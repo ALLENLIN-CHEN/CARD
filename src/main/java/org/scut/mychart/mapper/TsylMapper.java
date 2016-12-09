@@ -5,7 +5,7 @@ import org.scut.mychart.model.TsylModel;
 import java.util.List;
 
 /**
- * Created by linqidi on 2016/12/8.
+ * Created by linqidi on 2016/12/9.
  */
 public interface TsylMapper {
     public List<TsylModel> getCountByGender(String business);

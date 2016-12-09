@@ -6,6 +6,9 @@ import java.util.List;
 /**
  * Created by gzw on 2016/7/15.
  */
+/**
+ * 修改 by linqidi on 2016/12/9.
+ */
 public class DictionaryString {
 	
 	/**
