@@ -1,6 +1,6 @@
-var echart, myChart, charts = { length: 6 };
+var myChart;
 var timer = null; //主要用于仪表盘等定时器的句柄，每当新的展示需要重置操作
-//chart1, chart2, chart3, chart4, chart5 在相应的展示时初始化
+
 var mapGeoData; //用于保存地图数据
 var isInit = true; //用于初始化处理单独显示的div宽高获取不到的情况
 var isAreaChange = false; //用于判断是否切换了地区
@@ -10,7 +10,7 @@ var option;
 //初始化设置
 $(function() {
 	hideLoading();
-	$('.area-wrap').hide();
+//	$('.area-wrap').hide();
 	myChart = echarts.init(document.getElementById('chartMain'));
 	$(".tablesorter").tablesorter();
 
@@ -40,7 +40,7 @@ $(function() {
 	$('.item').on('click', function() {
 		//清除定时器
 		clearInterval(timer);
-		
+		$('.area-wrap').hide();
 		$('.right-content .single').hide();
 		$('.right-content .multi').show();
 		$('.sub-item-wrap.active').removeClass('active');
@@ -60,23 +60,47 @@ $(function() {
 		//清除定时器
 		clearInterval(timer);
 		
-		
+		showLoading();
 		if(isInit) {
 			//这样写是为了能够让echarts能够得到所设置的width，而不是使用默认的width。 设置完毕后进行hide隐藏掉
 			$('.right-content .single').css('visibility','visible').hide();
 			
 		}
-		showLoading();
+		
 		
 		$('.sub-item-wrap.active').removeClass('active');
 		$(this).parent().addClass('active');
-		var param = {};
-		param.url = $(this).data('url');
-		getAjax(param);
 		
-		$('.area-wrap').hide();
+		if(!$('.time_wrap').is(':hidden')) {
+			$('.time_wrap').hide();
+		}
 		
+		if(!$('.area-wrap').is(':hidden')) {
+			$('.area-wrap').hide();
+		}
 		
+		if(!$(this).data('no-init')) {
+			var url = $(this).data('url');
+			$.ajax({
+				type: 'GET',
+				url: url,
+				dataType: 'json',
+				success: function(res) {
+					formatOptionConfig(res);
+				},
+				error: function(err) {
+					alert('获取数据出错，错误为：' + err);
+				}
+			});
+		}else {
+			hideLoading();
+			$('.time_wrap').show();
+		}
+//		var param = {};
+//		param.url = $(this).data('url');
+//		getAjax(param);
+		
+		hideLoading();
 	
 	});
 	
@@ -91,6 +115,7 @@ $(function() {
 		
 	});
 	
+	
 	/**
 	 * 用于设定地区按钮的选择
 	 */
@@ -100,55 +125,71 @@ $(function() {
 			$(this).addClass('active');
 			
 			isAreaChange = true;
+			var url = $(this).data('url');
+//			$.ajax({
+//				type: 'GET',
+//				url: url,
+//				dataType: 'json',
+//				success: function(res) {
+//					formatOptionConfig(res);
+//				},
+//				error: function(err) {
+//					alert('获取数据出错，错误为：' + err);
+//				}
+//			});
 		}
 	});
 	
+	
+	
+	$(document).on('click', '.time_wrap .search', function() {
+		showLoading();
+		
+		var sTime = $('.startTime').val() - 0;
+		var eTime = $('.endTime').val() - 0;
+		if(eTime < sTime) {
+			alert('起始时间不能大于结束时间！');
+			hideLoading();
+			return;
+		}
+		
+		var url = $('.sub-item-wrap.active .type').data('url');
+		var params = {
+				sTime: sTime,
+				eTime: eTime
+		}
+		$.ajax({
+			type: 'GET',
+			url: url,
+			dataType: 'json',
+			data: params,
+			success: function(res) {
+				formatOptionConfig(res);
+			},
+			error: function(err) {
+				alert('获取数据出错，错误为：' + err);
+			}
+		});
+		hideLoading();
+		
+		
+	});
 /*** 结束配置 ***/
+	
 });
 
-/*** 进行设置多图展示的函数 ***/
-//function setMultiCharts() {
-//	var active = $('.item.active');
-//	var themeId = active.data('id');
-//	
-//	var options = chartsOption[themeId].options;
-//	//将多余的展示div设置成不可见
-//	if(options.length < charts.length) {
-//		var diff = options.length + 1;
-//		for(diff; diff <= charts.length; diff++ ) {
-//			$('#chart' + diff).css('visibility','hidden');
-//		}
-//	}
-//	
-//	var index = 1;
-//	$.each(options, function(key, value) {
-//		$('#chart' + index).css('visibility','visible');
-//		//初始化用于获得设置echarts的句柄
-//		charts['chart'+index] = echart.init(document.getElementById('chart'+index));
-//		charts['chart'+index].setOption(value);
-//		index++;
-//	});
-//	
-//	if(isInit) {
-//		//这样写是为了能够让echarts能够得到所设置的width，而不是使用默认的width。 设置完毕后进行hide隐藏掉
-//		$('.right-content .single').css('visibility','visible').hide();
-//		isInit = false;
-//	}
-//	
-//	hideLoading();
-//	
-//}
-/*** 结束定义 ***/
+
+
 
 /*** 设置进行ajax访问请求 ***/
-function getAjax(param) {
-	showLoading();
-
-	$.get(param.url, function (res) {
-        formatOptionConfig(res);
-		hideLoading();
-    });
-}
+//function getAjax(param) {
+//	showLoading();
+//
+//	$.get(param.url, function (res) {
+//        formatOptionConfig(res);
+//		hideLoading();
+//    });
+//}
 /*** 结束设置 ***/
 
 
@@ -156,7 +197,7 @@ function getAjax(param) {
 function formatOptionConfig(data) {
 	$('.right-content .single').show();
 	$('.right-content .multi').hide();
-	
+	$('.area-wrap').hide();
 	//初始化用于获得设置echarts的句柄
 	myChart.dispose();
 	myChart = echarts.init(document.getElementById('chartMain'));
@@ -180,10 +221,23 @@ function formatOptionConfig(data) {
 				setTimer(data);
 				break;
 			case 'histogram_hos':
-				option=setHostogramHosOption(data);
+				option=setHistogramHosOption(data);
 				myChart.setOption(option);
 				myChart.on('timelinechanged',handleTimeLine);
 				break;
+			case 'histogram_hos_percent':
+				setHistogramHosPerOption(data);
+				
+				break;
+			case 'histogram_dep':
+				option=setHistogramDepOption(data);
+				myChart.setOption(option);
+				myChart.on('timelinechanged',handleTimeLineDep);
+				break;
+			case 'histogram_dep_percent':
+				setHistogramDepPerOption(data);
+				break;
+				
 			default:
 		}
 	}
@@ -573,7 +627,7 @@ function setFunnelOption(obj){
 	
 }
 //设置仪表盘option
-function setHostogramHosOption(obj){
+function setHistogramHosOption(obj){
 	var name = obj.name;
 	var num=obj.num;
 	var sum=obj.sum;
@@ -680,11 +734,273 @@ function setHostogramHosOption(obj){
 	return option;
 	
 }
+
+function setHistogramHosPerOption(obj){
+	
+	var percents=[];
+	var names=[];
+	
+	var data =obj.data;
+	
+	for(var i=0;i<10;i++){
+		names.push(data[i].key);
+		percents.push(data[i].value);
+		
+		
+	}
+	for(var i =0;i<percents.length;i++){
+		percents[i]=(percents[i]/1).toFixed(2);
+	}
+	
+
+	var option = {
+			tooltip : {
+		        trigger: 'axis',
+		        formatter: "{a} <br/>{b} : {c}%",
+		        axisPointer : {            // 坐标轴指示器，坐标轴触发有效
+		            type : 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
+		        }
+		    },
+		    grid: {
+		        left: '3%',
+		        right: '4%',
+		        containLabel: true
+		    },
+		    xAxis : [
+		         {
+		            type : 'category',
+		            axisTick : {show: false},
+		            data : names,
+		            axisLabel:{
+			        	  interval:0,
+	                    rotate:30
+	                 }
+		        }
+		    ],
+		    yAxis : [
+		        {
+		            type : 'value'
+		        }
+		    ],
+		    series : [
+		        {
+		            name:'top10',
+		            type:'bar',
+		            label: {
+		                normal: {
+		                    show: true,
+		                    formatter: function(v) {
+		                    	return v.value + '%';
+		                    },
+		                    position: 'inside'
+		                }
+		            },
+		            data: percents
+		        }
+		    ]	
+		};
+	myChart.setOption(option);
+}
 /*** 结束设置 ***/
+function setHistogramDepOption(obj){
+	var hosName = obj.hosname;
+	var depName=obj.depname;
+	var num=obj.num;
+	var sum=obj.sum;
+	//alert("jdfajd");
+	
+	
+	var years=[];
+	for(var i=0;i<sum.length;i++){
+		years[i]=sum[i].year;
+	}
+	var timeLine=[];
+
+	var cur=0;
+	for(var i=0;i<years.length;i++){
+		var arr =[];
+		arr=num[years[i]];
+		
+		timeLine.push({
+			title: {text: years[i]+'年医院住院登记数量统计'},
+			series: [
+				   {
+					  name: "年总量",
+					  label: {
+		                normal: {
+		                    show: true
+		                }
+					  },
+					  data: arr
+				   }
+				]
+		})
+	}
+	
+	var option = {
+			extended: {hospital: hosName, department: depName},
+			baseOption: {
+//			
+				timeline: {
+					axisType: 'category',
+					autoPlay: true,
+					playInterval: 3000,
+                    orient: 'vertical',
+                    inverse: true,
+                    right: 10,
+                    top: 150,
+                    bottom: 10,
+                    width: 60,
+                    data: years,
+                    label: {
+	                    formatter : function(s) {
+	                        return s+'年';
+	                    }
+	                }
+                },
+				title: {
+					text: '医院住院登记数量统计'
+				},
+				tooltip : {
+			        trigger: 'axis',
+			        axisPointer : {            // 坐标轴指示器，坐标轴触发有效
+			            type : 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
+			        },
+					formatter: function(v) {
+		        	var i = v[0].dataIndex;
+		        	return hosName[2010][i] + '---' + depName[2010][i] + "</br>数量: " + timeLine[0].series[0].data[i];
+		        }
+				
+			    },
+				toolbox: {
+					feature: {
+						dataView: {readOnly: true},
+						restore: {},
+						saveAsImage: {}
+					}
+				},
+				xAxis : [
+			       {
+			           type : 'category',
+			           axisTick : {show: false},
+			           axisLabel:{
+			        	  interval:0,
+	                      rotate:30
+	                   },
+			           data : depName[2010]
+	                   
+	                   
+			       }
+			    ],
+			    yAxis : [
+			       {
+			           type : 'value'
+			       }
+			    ],
+				grid: {
+			        left: '3%',
+			        right: '7%',
+			        containLabel: true
+			    },
+				calculable: true,
+				series: [
+			         {
+			        	type: 'bar'
+			         }
+				]
+			},
+			options: timeLine
+	};
+	return option;
+}
+
+function setHistogramDepPerOption(obj){
+	var percents=[];
+	var arr=[];
+	var hospitalName=[];
+	var departmentName=[];
+	
+	
+	var data =obj.data;
+	
+	for(var i=0;i<10;i++){
+		arr=data[i].key.split('-');
+		hospitalName.push(arr[0]);
+		departmentName.push(arr[1]);
+		percents.push(data[i].value);
+		
+		
+	}
+	for(var i =0;i<percents.length;i++){
+		percents[i]=(percents[i]/1).toFixed(2);
+	}
+	
+
+	var option = {
+			tooltip : {
+		        trigger: 'axis',
+		        formatter: function(v){
+		        	var i=v[0].dataIndex;
+		        	return hospitalName[i]+'---'+departmentName[i]+ "</br>占比: " + percents[i] + '%';
+		        },
+		        axisPointer : {            // 坐标轴指示器，坐标轴触发有效
+		            type : 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
+		        }
+		    },
+		    grid: {
+		        left: '3%',
+		        right: '4%',
+		        containLabel: true
+		    },
+		    xAxis : [
+		         {
+		            type : 'category',
+		            axisTick : {show: false},
+		            data : departmentName,
+		            axisLabel:{
+			        	  interval:0,
+	                    rotate:30
+	                 }
+		        }
+		    ],
+		    yAxis : [
+		        {
+		            type : 'value'
+		        }
+		    ],
+		    series : [
+		        {
+		            name:'top10',
+		            type:'bar',
+		            label: {
+		                normal: {
+		                    show: true,
+		                    formatter: function(v) {
+		                    	return v.value + '%';
+		                    },
+		                    position: 'inside'
+		                }
+		            },
+		            data: percents
+		        }
+		    ]	
+		};
+	myChart.setOption(option);
+}
 
 /*** loading动画 ***/
 //加载loading
-
+function handleTimeLineDep(timeLineData){
+	var legends=[];
+	var index= timeLineData.currentIndex;
+	legends = option.extended.department[2010+index];
+	option.baseOption.xAxis[0].data = legends;
+	option.baseOption.tooltip.formatter = function(v) {
+		var i = v[0].dataIndex;
+		return option.extended.hospital[2010+index][i] + "---" + option.extended.department[2010+index][i] + "</br>数量: " + option.options[index].series[0].data[i];
+	};
+	myChart.setOption(option);
+}
 function handleTimeLine(timeLineData){
 	var legends=[];
 	var index= timeLineData.currentIndex;
