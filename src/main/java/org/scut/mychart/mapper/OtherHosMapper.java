@@ -32,18 +32,34 @@ public interface OtherHosMapper {
 	 * 获取柱状图数据 按医院
 	 * @return
 	 */
+	
+	
 	public List<OtherHosModel> selectHospital();
+	
+	/**
+	 * 医院占比
+	 * @param sTime
+	 * @param eTime
+	 * @return
+	 */
+	public List<OtherHosModel> selectHosPercent(String sTime,String eTime);
 	
 	/**
 	 * 获取柱状图数据 按部门
 	 * @return
 	 */
+	public List<OtherHosModel> selectHosMax(String sTime,String eTime);
+	
 	public List<OtherHosModel> selectDepartment();
 	
-	/**
-	 * 获取柱状图数据 按医生
+	/**部门占比
+	 * @param sTime
+	 * @param eTime
 	 * @return
 	 */
-	public List<OtherHosModel> selectDoctor();
+	public List<OtherHosModel> selectDepPercent(String sTime,String eTime);
+	
+	public List<OtherHosModel> selectDepMax(String sTime,String eTime);
+	
 
 }

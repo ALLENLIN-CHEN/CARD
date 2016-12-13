@@ -53,22 +53,49 @@
     </select>
     <select id ="selectDepartment" resultType="org.scut.mychart.model.OtherHosModel">
     	<![CDATA[
-		    select year(operation_time) as year,department as dep_name, count(*) as person_num
+		    select year(operation_time) as year,hospital as hos_name,department as dep_name, count(*) as person_num
 		    from hospital_business
 		    where operation='住院登记'
-		    group by year,dep_name
-		    order by year,person_num
+		    group by year,hos_name,dep_name
+		    order by year,person_num desc
 		     
     	]]>
     </select>
     
-     <select id ="selectDoctor" resultType="org.scut.mychart.model.OtherHosModel">
+     <select id ="selectHosPercent" resultType="org.scut.mychart.model.OtherHosModel">
     	<![CDATA[
-		    select year(operation_time) as year,doctor as doc_name, count(*) as person_num
-		    from hospital_business
-		    where operation='住院登记'
-		    group by year,doc_name
-		    order by year,person_num
+		   select hospital as hos_name, count(*) as person_num 
+			from hospital_business where operation ='住院登记' and operation_time between #{0} and #{1} 
+			group by hos_name 
+			order by hos_name
+		     
+    	]]>
+    </select>
+    <select id ="selectHosMax" resultType="org.scut.mychart.model.OtherHosModel">
+    	<![CDATA[
+		   select temp.hospital as hos_name, max(temp.dsum) as person_num
+			from (select hospital, count(*) as dsum from hospital_business where operation = '住院登记' and operation_time between #{0} and #{1} group by hospital, operation_time) temp 
+			group by hospital 
+			order by hospital
+		     
+    	]]>
+    </select>
+    <select id ="selectDepPercent" resultType="org.scut.mychart.model.OtherHosModel">
+    	<![CDATA[
+    	 select hospital as hos_name, department as dep_name, count(*) as person_num 
+			from hospital_business where operation ='住院登记' and operation_time between #{0} and #{1} 
+			group by hos_name,dep_name 
+			order by hos_name,dep_name
+		  
+		     
+    	]]>
+    </select>
+    <select id ="selectDepMax" resultType="org.scut.mychart.model.OtherHosModel">
+    	<![CDATA[
+		   select temp.hospital as hos_name,temp.department as dep_name, max(temp.dsum) as person_num
+			from (select hospital,department, count(*) as dsum from hospital_business where operation = '住院登记' and operation_time between  #{0} and #{1} group by hospital, department,operation_time) temp 
+			group by hospital ,department
+			order by hospital ,department
 		     
     	]]>
     </select>

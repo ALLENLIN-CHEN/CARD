@@ -2,12 +2,16 @@ package org.scut.mychart.service.impl;
 
 import java.time.Year;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import org.apache.derby.iapi.error.ExceptionSeverity;
 import org.apache.hadoop.hive.ql.parse.HiveParser_IdentifiersParser.booleanValue_return;
+import org.apache.hadoop.hive.ql.parse.HiveParser_IdentifiersParser.precedenceEqualNegatableOperator_return;
 import org.apache.tools.ant.taskdefs.Length;
 import org.eclipse.jetty.jndi.java.javaNameParser;
 import org.scut.mychart.mapper.OtherHosMapper;
@@ -205,20 +209,130 @@ public class OtherHosServiceimpl implements OtherHosService{
 	@Override
 	public Map<String, Object> getHistogramData_dep() {
 		// TODO Auto-generated method stub
+		
 		Map<String,Object> data = new HashMap<String,Object>();
 		List<OtherHosModel> list =this.otherhos.selectDepartment();
-		data.put("data", list);
+		List<OtherHosModel> sum  = this.otherhos.selectYearNum();
+		
+		Map<String, Object> hosName = new HashMap<String,Object>();
+		Map<String, Object> num = new HashMap<String,Object>();
+		Map<String,Object> depName =new HashMap<String,Object>();
+ 		
+		
+		for(int i=0;i<sum.size();i++){
+			List<String> hosname=new ArrayList<String>();
+			List<String> depname=new ArrayList<String>();
+			List<Integer> hosnum=new ArrayList<Integer>();
+			for(int j=0,k=0;j<list.size();j++){
+				if(list.get(j).getYear().equals(sum.get(i).getYear())){
+					hosname.add(list.get(j).getHos_name());
+					depname.add(list.get(j).getDep_name());
+					hosnum.add(list.get(j).getPerson_num());
+					k++;
+				}
+				if(k>=10){
+					break;
+				}
+				
+			}
+			hosName.put(sum.get(i).getYear(), hosname);
+			depName.put(sum.get(i).getYear(),depname);
+			num.put(sum.get(i).getYear(), hosnum);
+		}
+		
+		data.put("hosname", hosName);
+		data.put("depname", depName);
+		data.put("num", num);
+		data.put("sum", sum);
 		data.put("type", "histogram_dep");
 		return data;
 	}
 
 	@Override
-	public Map<String, Object> getHistogramData_doc() {
+	public Map<String, Object> getHistogramData_hosPercent(int sTime, int eTime) {
 		// TODO Auto-generated method stub
+		
 		Map<String,Object> data = new HashMap<String,Object>();
-		List<OtherHosModel> list =this.otherhos.selectDoctor();
+		String stime = sTime + "-01-01";
+		String etime = eTime+"-12-31";
+		List<OtherHosModel> sum  = this.otherhos.selectHosPercent(stime, etime);
+		List<OtherHosModel> max = this.otherhos.selectHosMax(stime, etime);
+		
+		Map<String , Double> percent = new HashMap<String,Double>();
+		int s = (eTime-sTime+1)*365;
+		for(int i =0;i<sum.size();i++){
+			double per= (double)sum.get(i).getPerson_num()/(max.get(i).getPerson_num()*s)*100;
+			if(!percent.containsKey(sum.get(i).getHos_name())){
+				percent.put(sum.get(i).getHos_name(), per);
+			}
+		}
+		
+		/**
+		 * 用于排序
+		 */
+		List<Map.Entry<String, Double>> list = new ArrayList<Map.Entry<String,Double>>(percent.entrySet());
+		Collections.sort(list, new Comparator<Map.Entry<String, Double>>() {
+
+			@Override
+			public int compare(Entry<String, Double> o1,
+					Entry<String, Double> o2) {
+				if(o2.getValue() - o1.getValue() >= 0) {
+					return 1;
+				}else {
+					return -1;
+				}
+			}
+		});
+
+		
 		data.put("data", list);
-		data.put("type", "histogram_doc");
+		data.put("type", "histogram_hos_percent");
+		return data;
+	}
+	
+	
+	@Override
+	public Map<String, Object> getHistogramData_depPercent(int sTime, int eTime) {
+		// TODO Auto-generated method stub
+		
+		Map<String,Object> data = new HashMap<String,Object>();
+		String stime = sTime + "-01-01";
+		String etime = eTime+"-12-31";
+		List<OtherHosModel> sum  = this.otherhos.selectDepPercent(stime, etime);
+		List<OtherHosModel> max = this.otherhos.selectDepMax(stime, etime);
+		
+		Map<String , Double> percent = new HashMap<String,Double>();
+		int s = (eTime-sTime+1)*365;
+		for(int i =0;i<sum.size();i++){
+			
+			double per= (double)sum.get(i).getPerson_num()/(max.get(i).getPerson_num()*s)*100;
+			String temp =sum.get(i).getHos_name()+'-'+sum.get(i).getDep_name();
+			
+			if(!percent.containsKey(temp)){
+				percent.put(temp, per);
+			}
+		}
+		
+		/**
+		 * 用于排序
+		 */
+		List<Map.Entry<String, Double>> list = new ArrayList<Map.Entry<String,Double>>(percent.entrySet());
+		Collections.sort(list, new Comparator<Map.Entry<String, Double>>() {
+
+			@Override
+			public int compare(Entry<String, Double> o1,
+					Entry<String, Double> o2) {
+				if(o2.getValue() - o1.getValue() >= 0) {
+					return 1;
+				}else {
+					return -1;
+				}
+			}
+		});
+
+		
+		data.put("data", list);
+		data.put("type", "histogram_dep_percent");
 		return data;
 	}
 

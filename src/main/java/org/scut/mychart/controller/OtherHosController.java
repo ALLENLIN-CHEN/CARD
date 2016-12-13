@@ -5,6 +5,7 @@ import java.util.Map;
 import org.scut.mychart.model.OtherHosModel;
 import org.scut.mychart.service.OtherHosService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.EnableLoadTimeWeaving;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -90,13 +91,26 @@ public class OtherHosController {
     }
 	
 	/**
-	 * 获取柱状图数据，按医生
+	 * 获取柱状图数据，医院占比
 	 * @return
 	 */
-	@RequestMapping("/otherGetHisDoctor")
+	@RequestMapping("/otherGetHisHosPercent")
     @ResponseBody
-    public Map<String, Object> getHisDoctor(){
-		Map<String, Object> map =  otherHosService.getHistogramData_doc();
+    public Map<String, Object> getHisHosPercent(int sTime, int eTime){
+		Map<String, Object> map =  otherHosService.getHistogramData_hosPercent(sTime, eTime);
+        return map;
+    }
+	
+	
+	/**获取数据，部门占比
+	 * @param sTime
+	 * @param eTime
+	 * @return
+	 */
+	@RequestMapping("/otherGetHisDepPercent")
+    @ResponseBody
+    public Map<String, Object> getHisDepPercent(int sTime, int eTime){
+		Map<String, Object> map =  otherHosService.getHistogramData_depPercent(sTime, eTime);
         return map;
     }
 

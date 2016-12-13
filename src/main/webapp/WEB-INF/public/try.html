@@ -16,9 +16,12 @@
     <![endif]-->
 	
 	<!-- 用于图表展示与控制样式 -->
-	<link href="css/home.css" rel="stylesheet">
+	<link href="css/vindex.css" rel="stylesheet">
 	<!-- 滚动条样式 -->
 	<link href="css/jquery.mCustomScrollbar.min.css" rel="stylesheet">
+	
+	<script type="text/javascript" src="js/jquery.min.js"></script>
+	<script type="text/javascript" src="js/bootstrap.min.js"></script>
 
 	<script type="text/javascript" src="js/jquery-1.7.2.min.js"></script>
 	<script type="text/javascript" src="js/mCustomScrollbar/jquery.mCustomScrollbar.concat.min.js"></script>
@@ -51,7 +54,24 @@
 	                <li><a href="/ETL/html/index.html">预处理</a></li>
 	                <li><a href="/olap/">OLAP分析</a></li>
 	                <li><a href="/openreports/">报表展示</a></li>
-	                <li><a href="/mychart/test.html">业务样例</a></li>
+	                <li class="dropdown">
+	                	<a id="dLabel" data-target="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">业务样例<span class="caret"></span></a>
+	                	<ul class="dropdown-menu multi-level" role="menu" aria-labelledby="dropdownMenu">
+	                		<li class="dropdown-submenu">
+		                		<a tabindex="-1" href="#">用卡行为分析</a>
+		                		<ul class="dropdown-menu">
+		                			<li><a tabindex="-1" href="/mychart/vindex.html">用卡行为挂号业务分析</a></li>
+		                			<li><a tabindex="-1" href="/mychart/try.html">用卡行为住院登记业务分析</a></li>
+		                		</ul>
+	                		</li>
+	                		<li class="dropdown-submenu">
+		                		<a tabindex="-1" href="#">企业员工参保基数分析</a>
+		                		<ul class="dropdown-menu">
+		                			<li><a tabindex="-1" href="/mychart/vindex.html">用卡行为挂号业务分析</a></li>
+		                		</ul>
+	                		</li>
+	                	</ul>
+	                </li>
 	                <li><a href="https://rubytutorial-jungieve.c9users.io/users">其他成员</a></li>
 	                <li class="dropdown">
 	                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">账户</a>
@@ -86,15 +106,19 @@
 					</div>
 					<div class="sub-item-wrap">
 						<i class="icon"></i>
-						<div class="type" data-url="charts/otherGetHisHospital">住院登记医院分析</div>
+						<div class="type" data-url="charts/otherGetHisHospital">住院登记医院数量分析</div>
 					</div>
 					<div class="sub-item-wrap">
 						<i class="icon"></i>
-						<div class="type" data-url="charts/chartMap/charges/unemployment/count">住院登记科室分析</div>
+						<div class="type" data-url="charts/otherGetHisHosPercent" data-no-init="1">住院登记医院占比分析</div>
 					</div>
 					<div class="sub-item-wrap">
 						<i class="icon"></i>
-						<div class="type" data-url="charts/chartMapSub/charges/unemployment/avg">住院登记医生分析</div>
+						<div class="type" data-url="charts/otherGetHisDepartment">住院登记科室数量分析</div>
+					</div>
+					<div class="sub-item-wrap">
+						<i class="icon"></i>
+						<div class="type" data-url="charts/otherGetHisDepPercent" data-no-init="1">住院登记科室占比分析</div>
 					</div>
 					
 				</div>
@@ -112,6 +136,33 @@
 					<button type="button" class="btn btn-primary">汉川市</button>
 					<button type="button" class="btn btn-primary">大悟县</button>
 					<button type="button" class="btn btn-primary">安陆市</button>
+				</div>
+				<div class="time_wrap" style="display:none;">
+					<div class="form-group clearfix">
+						<label class="control-label col-sm-2">起始时间(年份)</label>
+						<div class="col-sm-2">
+							<select class="form-control startTime">
+							  <option value="2010">2010年</option>
+							  <option value="2011">2011年</option>
+							  <option value="2012">2012年</option>
+							  <option value="2013">2013年</option>
+							  <option value="2014">2014年</option>
+							  <option value="2015">2015年</option>
+							</select>
+						</div>
+						<label class="control-label col-sm-2">结束时间(年份)</label>
+						<div class="col-sm-2">
+							<select class="form-control endTime">
+							  <option value="2010">2010年</option>
+							  <option value="2011">2011年</option>
+							  <option value="2012">2012年</option>
+							  <option value="2013">2013年</option>
+							  <option value="2014">2014年</option>
+							  <option value="2015">2015年</option>
+							</select>
+						</div>
+						<button type="button" class="btn btn-primary col-sm-1 search">搜索</button>
+					</div>
 				</div>
 				<div class="multi">
 					<div id="chart1" class="multi-chart"></div>
