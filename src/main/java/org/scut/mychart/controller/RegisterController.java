@@ -71,6 +71,20 @@ public class RegisterController {
 		return result;
 	} 
 	
+	@RequestMapping("/docotorTotal")
+	@ResponseBody
+	public Map<String, Object> getDoctorTotal(){
+		Map<String, Object> result = registerService.getDoctorTotal();
+		return result;
+	} 
+
+	@RequestMapping("/docotorPercent")
+	@ResponseBody
+	public Map<String, Object> getDocotorPercent(int startTime, int endTime){
+		Map<String, Object> result = registerService.getDoctorPercent(startTime, endTime);
+		return result;
+	} 
+	
 
 
 }
