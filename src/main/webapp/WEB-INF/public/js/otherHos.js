@@ -40,17 +40,17 @@ $(function() {
 	$('.item').on('click', function() {
 		//清除定时器
 		clearInterval(timer);
-		$('.area-wrap').hide();
-		$('.right-content .single').hide();
-		$('.right-content .multi').show();
-		$('.sub-item-wrap.active').removeClass('active');
-		var self = $(this);
-		if(!self.hasClass('active')) {
-			$('.sub-' + $('.item.active').data('index')).slideToggle();
-			$('.item.active').removeClass('active');
-			self.addClass('active');
-			$('.sub-' + self.data('index')).slideToggle();
-		}
+		// $('.area-wrap').hide();
+		// $('.right-content .single').hide();
+		// $('.right-content .multi').show();
+		// $('.sub-item-wrap.active').removeClass('active');
+		// var self = $(this);
+		// if(!self.hasClass('active')) {
+		// 	$('.sub-' + $('.item.active').data('index')).slideToggle();
+		// 	$('.item.active').removeClass('active');
+		// 	self.addClass('active');
+		// 	$('.sub-' + self.data('index')).slideToggle();
+		// }
 		
 		//setMultiCharts();
 	});
