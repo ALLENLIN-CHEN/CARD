@@ -433,6 +433,9 @@ function getRegisterHospitalPercent(data) {
 	            type : 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
 	        }
 	    },
+	    title: {
+			text: '前10挂号业务医院统计'
+		},
 	    grid: {
 	        left: '3%',
 	        right: '4%',
@@ -609,6 +612,9 @@ function getRegisterDepartmentPercent(data) {
 	            type : 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
 	        }
 	    },
+	    title: {
+			text: '前10挂号业务医院科室统计'
+		},
 	    grid: {
 	        left: '3%',
 	        right: '4%',
@@ -785,6 +791,9 @@ function getRegisterDoctorPercent(data) {
 	            type : 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
 	        }
 	    },
+	    title: {
+			text: '前10挂号业务医院科室医生统计'
+		},
 	    grid: {
 	        left: '3%',
 	        right: '4%',
