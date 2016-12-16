@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.scut.mychart.mapper.ClinicMapper">
+	<!-- 开启二级缓存 -->
+	<cache size="1024" readOnly="true" />
+	
+	<select id="getAmountBySex" resultType="org.scut.mychart.model.ClinicModel" useCache="true">
+		<![CDATA[
+			select year(operation_time) as year,sex,count(*) as amount
+			from (select social_security_card,sex from person) p,
+			     (select social_security_card,operation_time from hospital_business where operation=#{0}) h																
+			where p.social_security_card=h.social_security_card 
+			group by year, sex 
+			order by year asc
+		]]>
+	</select>
+	
+	<select id="getAmountByArea" resultType="org.scut.mychart.model.ClinicModel" useCache="true">
+		<![CDATA[
+			select year(operation_time) as year,area,count(*) as amount
+			from hospital_business h															
+			where h.operation=#{0}
+			group by year, area 			
+			order by year asc
+		]]>
+	</select>
+	
+	<select id="getAmountByAge" resultType="org.scut.mychart.model.ClinicModel" useCache="true">
+		<![CDATA[
+			select year(operation_time) as year,year(birthday) as birthYear,count(*) as amount
+			from (select social_security_card,birthday,sex from person) p,
+			     (select social_security_card,operation_time from hospital_business where operation=#{0}) h																
+			where p.social_security_card=h.social_security_card 
+			group by year, birthYear
+			order by year asc
+		]]>
+	</select>
+		
+	<select id="getAmountByHospital" resultType="org.scut.mychart.model.ClinicModel" useCache="true">
+		<![CDATA[
+			select year(operation_time) as year,hospital,count(*) as amount
+			from hospital_business 										
+			where operation=#{0}
+			group by year,hospital
+			order by year asc, amount desc,hospital desc
+		]]>
+	</select>
+	
+	<select id="getAmountByDepartment" resultType="org.scut.mychart.model.ClinicModel" useCache="true">
+		<![CDATA[
+			select year(operation_time) as year,hospital,department,count(*) as amount 
+			from hospital_business 										
+			where operation=#{0}
+			group by year,hospital,department 			
+			order by year asc, amount desc,department desc
+		]]>
+	</select>
+	
+	<select id="getAmountByDoctor" resultType="org.scut.mychart.model.ClinicModel" useCache="true">
+		<![CDATA[
+			select year(operation_time) as year,hospital,department,doctor,count(*) as amount
+			from hospital_business 										
+			where operation=#{0}
+			group by year,hospital,department,doctor						
+			order by year asc, amount desc,doctor asc
+		]]>
+	</select>
+	
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
