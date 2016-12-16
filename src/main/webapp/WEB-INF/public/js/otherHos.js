@@ -60,13 +60,13 @@ $(function() {
 		//清除定时器
 		clearInterval(timer);
 		
-		showLoading();
+	
 		if(isInit) {
 			//这样写是为了能够让echarts能够得到所设置的width，而不是使用默认的width。 设置完毕后进行hide隐藏掉
 			$('.right-content .single').css('visibility','visible').hide();
 			
 		}
-		
+		showLoading();
 		
 		$('.sub-item-wrap.active').removeClass('active');
 		$(this).parent().addClass('active');
@@ -87,6 +87,7 @@ $(function() {
 				dataType: 'json',
 				success: function(res) {
 					formatOptionConfig(res);
+					
 				},
 				error: function(err) {
 					alert('获取数据出错，错误为：' + err);
@@ -100,7 +101,7 @@ $(function() {
 //		param.url = $(this).data('url');
 //		getAjax(param);
 		
-		hideLoading();
+		
 	
 	});
 	
@@ -168,9 +169,11 @@ $(function() {
 			},
 			error: function(err) {
 				alert('获取数据出错，错误为：' + err);
+				hideLoading();
+				
 			}
 		});
-		hideLoading();
+		
 		
 		
 	});
@@ -201,7 +204,7 @@ function formatOptionConfig(data) {
 	//初始化用于获得设置echarts的句柄
 	myChart.dispose();
 	myChart = echarts.init(document.getElementById('chartMain'));
-	
+	hideLoading();
 	if(!data.type) {
 		myChart.setOption(eval('('+ data+')'));
 	}else {
@@ -349,8 +352,10 @@ function setLineOption(obj){
 	}
 	
 
-	option = {
-			   
+	var option = {
+			
+			title: {text: "住院登记男女人数分析"},
+			
 		    tooltip : {
 		        trigger: 'axis'
 		    },
@@ -429,7 +434,7 @@ function setPanelOption(obj){
 	//alert(data[area][0]);
 
 	var option = {
-			tile:{
+			title:{
 				text:"住院登记地区覆盖率"
 			},
 	
@@ -741,19 +746,30 @@ function setHistogramHosPerOption(obj){
 	var names=[];
 	
 	var data =obj.data;
-	
+	var time =obj.time;
 	for(var i=0;i<10;i++){
 		names.push(data[i].key);
 		percents.push(data[i].value);
 		
 		
 	}
+	
 	for(var i =0;i<percents.length;i++){
 		percents[i]=(percents[i]/1).toFixed(2);
 	}
-	
+	var t;
+	if(time[0]===time[1]){
+		t=time[0];
+	}
+	else{
+		t=time[0]+'-'+time[1]
+	}
 
 	var option = {
+			
+			
+			title: {text:t+'住院登记医院占比分析'},
+	
 			tooltip : {
 		        trigger: 'axis',
 		        formatter: "{a} <br/>{b} : {c}%",
@@ -922,6 +938,7 @@ function setHistogramDepPerOption(obj){
 	
 	
 	var data =obj.data;
+	var time =obj.time;
 	
 	for(var i=0;i<10;i++){
 		arr=data[i].key.split('-');
@@ -934,9 +951,19 @@ function setHistogramDepPerOption(obj){
 	for(var i =0;i<percents.length;i++){
 		percents[i]=(percents[i]/1).toFixed(2);
 	}
+	var t;
+	if(time[0]===time[1]){
+		t=time[0];
+	}
+	else{
+		t=time[0]+'-'+time[1]
+	}
+
 	
 
 	var option = {
+			title: {text:t+'住院登记科室占比分析'},
+	
 			tooltip : {
 		        trigger: 'axis',
 		        formatter: function(v){

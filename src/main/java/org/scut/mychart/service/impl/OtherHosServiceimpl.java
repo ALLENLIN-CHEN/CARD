@@ -255,6 +255,11 @@ public class OtherHosServiceimpl implements OtherHosService{
 		Map<String,Object> data = new HashMap<String,Object>();
 		String stime = sTime + "-01-01";
 		String etime = eTime+"-12-31";
+		List<String> time = new ArrayList<String>();
+		String str= sTime+"年";
+		String e = eTime+"年";
+		time.add(str);
+		time.add(e);
 		List<OtherHosModel> sum  = this.otherhos.selectHosPercent(stime, etime);
 		List<OtherHosModel> max = this.otherhos.selectHosMax(stime, etime);
 		
@@ -286,6 +291,7 @@ public class OtherHosServiceimpl implements OtherHosService{
 
 		
 		data.put("data", list);
+		data.put("time", time);
 		data.put("type", "histogram_hos_percent");
 		return data;
 	}
@@ -300,7 +306,11 @@ public class OtherHosServiceimpl implements OtherHosService{
 		String etime = eTime+"-12-31";
 		List<OtherHosModel> sum  = this.otherhos.selectDepPercent(stime, etime);
 		List<OtherHosModel> max = this.otherhos.selectDepMax(stime, etime);
-		
+		List<String> time = new ArrayList<String>();
+		String str= sTime+"年";
+		String e = eTime+"年";
+		time.add(str);
+		time.add(e);
 		Map<String , Double> percent = new HashMap<String,Double>();
 		int s = (eTime-sTime+1)*365;
 		for(int i =0;i<sum.size();i++){
@@ -332,6 +342,7 @@ public class OtherHosServiceimpl implements OtherHosService{
 
 		
 		data.put("data", list);
+		data.put("time", time);
 		data.put("type", "histogram_dep_percent");
 		return data;
 	}
