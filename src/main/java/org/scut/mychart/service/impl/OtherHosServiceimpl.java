@@ -249,7 +249,7 @@ public class OtherHosServiceimpl implements OtherHosService{
 	}
 
 	@Override
-	public Map<String, Object> getHistogramData_hosPercent(int sTime, int eTime) {
+	public Map<String, Object> getHistogramData_hosPercent(String sTime, String eTime) {
 		// TODO Auto-generated method stub
 		
 		Map<String,Object> data = new HashMap<String,Object>();
@@ -264,7 +264,7 @@ public class OtherHosServiceimpl implements OtherHosService{
 		List<OtherHosModel> max = this.otherhos.selectHosMax(stime, etime);
 		
 		Map<String , Double> percent = new HashMap<String,Double>();
-		int s = (eTime-sTime+1)*365;
+		int s = (Integer.valueOf(eTime)-Integer.valueOf(sTime)+1)*365;
 		for(int i =0;i<sum.size();i++){
 			double per= (double)sum.get(i).getPerson_num()/(max.get(i).getPerson_num()*s)*100;
 			if(!percent.containsKey(sum.get(i).getHos_name())){
@@ -298,7 +298,7 @@ public class OtherHosServiceimpl implements OtherHosService{
 	
 	
 	@Override
-	public Map<String, Object> getHistogramData_depPercent(int sTime, int eTime) {
+	public Map<String, Object> getHistogramData_depPercent(String sTime, String eTime) {
 		// TODO Auto-generated method stub
 		
 		Map<String,Object> data = new HashMap<String,Object>();
@@ -312,7 +312,7 @@ public class OtherHosServiceimpl implements OtherHosService{
 		time.add(str);
 		time.add(e);
 		Map<String , Double> percent = new HashMap<String,Double>();
-		int s = (eTime-sTime+1)*365;
+		int s = (Integer.valueOf(eTime)-Integer.valueOf(sTime)+1)*365;
 		for(int i =0;i<sum.size();i++){
 			
 			double per= (double)sum.get(i).getPerson_num()/(max.get(i).getPerson_num()*s)*100;

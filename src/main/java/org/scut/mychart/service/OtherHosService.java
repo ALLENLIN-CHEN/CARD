@@ -53,11 +53,11 @@ public interface OtherHosService {
 	 * 获取柱状图数据  医院占比
 	 * @return
 	 */
-	public Map<String, Object> getHistogramData_hosPercent(int sTime, int eTime);
+	public Map<String, Object> getHistogramData_hosPercent(String sTime, String eTime);
 	
 	/**获取柱状图数据  科室占比
 	 * @return
 	 */
-	public Map<String, Object> getHistogramData_depPercent(int sTime, int eTime);
+	public Map<String, Object> getHistogramData_depPercent(String sTime, String eTime);
 
 }

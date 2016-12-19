@@ -96,7 +96,7 @@ public class OtherHosController {
 	 */
 	@RequestMapping("/otherGetHisHosPercent")
     @ResponseBody
-    public Map<String, Object> getHisHosPercent(int sTime, int eTime){
+    public Map<String, Object> getHisHosPercent(String sTime, String eTime){
 		Map<String, Object> map =  otherHosService.getHistogramData_hosPercent(sTime, eTime);
         return map;
     }
@@ -109,7 +109,7 @@ public class OtherHosController {
 	 */
 	@RequestMapping("/otherGetHisDepPercent")
     @ResponseBody
-    public Map<String, Object> getHisDepPercent(int sTime, int eTime){
+    public Map<String, Object> getHisDepPercent(String sTime, String eTime){
 		Map<String, Object> map =  otherHosService.getHistogramData_depPercent(sTime, eTime);
         return map;
     }
