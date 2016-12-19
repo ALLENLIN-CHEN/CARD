@@ -281,12 +281,27 @@ public class OtherHosServiceimpl implements OtherHosService{
 			@Override
 			public int compare(Entry<String, Double> o1,
 					Entry<String, Double> o2) {
-				if(o2.getValue() - o1.getValue() >= 0) {
+				if(o1 == null && o2 == null) {  
+				    return 0;  
+				}  
+				if(o1 == null) {  
+				    return -1;  
+				}  
+				if(o2 == null) {  
+				    return 1;  
+				}
+				if(o2.getValue() - o1.getValue() > 0) {
 					return 1;
-				}else {
+				}
+				if(o1.getValue() - o2.getValue() > 0){
 					return -1;
 				}
+				if(o2.getValue() - o1.getValue() == 0) {
+					return 0;
+				}
+				return 0; 
 			}
+			
 		});
 
 		
@@ -332,12 +347,27 @@ public class OtherHosServiceimpl implements OtherHosService{
 			@Override
 			public int compare(Entry<String, Double> o1,
 					Entry<String, Double> o2) {
-				if(o2.getValue() - o1.getValue() >= 0) {
+				if(o1 == null && o2 == null) {  
+				    return 0;  
+				}  
+				if(o1 == null) {  
+				    return -1;  
+				}  
+				if(o2 == null) {  
+				    return 1;  
+				}
+				if(o2.getValue() - o1.getValue() > 0) {
 					return 1;
-				}else {
+				}
+				if(o1.getValue() - o2.getValue() > 0){
 					return -1;
 				}
+				if(o2.getValue() - o1.getValue() == 0) {
+					return 0;
+				}
+				return 0; 
 			}
+			
 		});
 
 		
