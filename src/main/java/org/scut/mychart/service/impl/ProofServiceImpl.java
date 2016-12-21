@@ -49,6 +49,7 @@ public class ProofServiceImpl implements ProofService {
         List yearlist = Arrays.asList(result.keySet().toArray());
         Collections.sort(yearlist);
         option.timeline().setData(yearlist);
+        option.timeline().label().formatter("function(s) {return s+'年';}");
         option.timeline().setAutoPlay(true);
         option.calculable(true);
 
