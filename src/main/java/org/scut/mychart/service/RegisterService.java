@@ -14,13 +14,13 @@ public interface RegisterService {
 
 	public Map<String, Object> getHospitalTotal();
 
-	public Map<String, Object> getHospitalPercent(int startTime, int endTime);
+	public Map<String, Object> getHospitalPercent(String startTime, String endTime);
 
 	public Map<String, Object> getDepartmentTotal();
 	
-	public Map<String, Object> getDepartmentPercent(int startTime, int endTime);
+	public Map<String, Object> getDepartmentPercent(String startTime, String endTime);
 
 	public Map<String, Object> getDoctorTotal();
 
-	public Map<String, Object> getDoctorPercent(int startTime, int endTime);
+	public Map<String, Object> getDoctorPercent(String startTime, String endTime);
 }

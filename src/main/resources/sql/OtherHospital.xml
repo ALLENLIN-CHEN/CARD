@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.scut.mychart.mapper.OtherHosMapper">
+	<!-- 开启二级缓存 -->
+    <cache size="1024" readOnly="true" />
+    <select id ="selectTotalNum" resultType="org.scut.mychart.model.OtherHosModel">
+    	<![CDATA[
+		    select year(operation_time) as year,count(*) as person_num,sex 
+		    from hospital_business h join person p on h.social_security_card=p.social_security_card
+		    where h.operation='住院登记' group by sex,year order by year,sex
+    	]]>
+    </select>
+    
+    <select id ="selectArea" resultType="org.scut.mychart.model.OtherHosModel">
+    	<![CDATA[
+		    select year(operation_time) as year,area as area,count(*) as person_num
+		    from hospital_business
+		    where operation='住院登记' group by year,area order by year,area
+    	]]>
+    </select>
+    
+    <select id ="selectYearNum" resultType="org.scut.mychart.model.OtherHosModel">
+    	<![CDATA[
+		    select year(operation_time) as year,count(*) as person_num
+		    from hospital_business
+		    where operation='住院登记' group by year order by year
+    	]]>
+    </select>
+    <select id ="selectAge" resultType="org.scut.mychart.model.OtherHosModel">
+    	<![CDATA[
+		    select year(operation_time) as year,
+		    case when(year(operation_time)-year(birthday)>65) then '老年'
+		    when(year(operation_time)-year(birthday)>40) then '中年'
+		    when(year(operation_time)-year(birthday)>6) then '青年'
+		    else '儿童'
+		    end as age,
+		    count(*) as person_num
+		       
+		    from hospital_business h right join person p on h.social_security_card=p.social_security_card
+		    where operation='住院登记' group by year,age order by year,age
+    	]]>
+    </select>
+    
+    <select id ="selectHospital" resultType="org.scut.mychart.model.OtherHosModel">
+    	<![CDATA[
+		    select year(operation_time) as year,hospital as hos_name,count(*) as person_num
+		    from hospital_business
+		    where operation='住院登记'
+		    group by year,hos_name
+		    order by year,person_num desc
+		     
+    	]]>
+    </select>
+    <select id ="selectDepartment" resultType="org.scut.mychart.model.OtherHosModel">
+    	<![CDATA[
+		    select year(operation_time) as year,hospital as hos_name,department as dep_name, count(*) as person_num
+		    from hospital_business
+		    where operation='住院登记'
+		    group by year,hos_name,dep_name
+		    order by year,person_num desc
+		     
+    	]]>
+    </select>
+    
+     <select id ="selectHosPercent" resultType="org.scut.mychart.model.OtherHosModel">
+    	<![CDATA[
+		   select hospital as hos_name, count(*) as person_num 
+			from hospital_business where operation ='住院登记' and operation_time between #{0} and #{1} 
+			group by hos_name 
+			order by hos_name
+		     
+    	]]>
+    </select>
+    <select id ="selectHosMax" resultType="org.scut.mychart.model.OtherHosModel">
+    	<![CDATA[
+		   select temp.hospital as hos_name, max(temp.dsum) as person_num
+			from (select hospital, count(*) as dsum from hospital_business where operation = '住院登记' and operation_time between #{0} and #{1} group by hospital, operation_time) temp 
+			group by hospital 
+			order by hospital
+		     
+    	]]>
+    </select>
+    <select id ="selectDepPercent" resultType="org.scut.mychart.model.OtherHosModel">
+    	<![CDATA[
+    	 select hospital as hos_name, department as dep_name, count(*) as person_num 
+			from hospital_business where operation ='住院登记' and operation_time between #{0} and #{1} 
+			group by hos_name,dep_name 
+			order by hos_name,dep_name
+		  
+		     
+    	]]>
+    </select>
+    <select id ="selectDepMax" resultType="org.scut.mychart.model.OtherHosModel">
+    	<![CDATA[
+		   select temp.hospital as hos_name,temp.department as dep_name, max(temp.dsum) as person_num
+			from (select hospital,department, count(*) as dsum from hospital_business where operation = '住院登记' and operation_time between  #{0} and #{1} group by hospital, department,operation_time) temp 
+			group by hospital ,department
+			order by hospital ,department
+		     
+    	]]>
+    </select>
+    
+    
+</mapper>

@@ -134,7 +134,7 @@
 
 .left-content .sub-item .sub-item-wrap {
 	display: flex;
-	height: 30px;
+	/*height: 30px;*/
 	line-height: 30px;
 	margin-top: 6px;
 }

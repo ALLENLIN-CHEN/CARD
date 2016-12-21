@@ -6,6 +6,7 @@ import org.scut.mychart.service.RegisterService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
@@ -52,7 +53,7 @@ public class RegisterController {
 
 	@RequestMapping("/hospitalPercent")
 	@ResponseBody
-	public Map<String, Object> getHospitalPercent(int startTime, int endTime){
+	public Map<String, Object> getHospitalPercent(@RequestParam String startTime, @RequestParam String endTime){
 		Map<String, Object> result = registerService.getHospitalPercent(startTime, endTime);
 		return result;
 	} 
@@ -66,7 +67,7 @@ public class RegisterController {
 	
 	@RequestMapping("/departmentPercent")
 	@ResponseBody
-	public Map<String, Object> getDepartmentPercent(int startTime, int endTime){
+	public Map<String, Object> getDepartmentPercent(@RequestParam String startTime, @RequestParam String endTime){
 		Map<String, Object> result = registerService.getDepartmentPercent(startTime, endTime);
 		return result;
 	} 
@@ -77,11 +78,14 @@ public class RegisterController {
 		Map<String, Object> result = registerService.getDoctorTotal();
 		return result;
 	} 
-	
+
 	@RequestMapping("/docotorPercent")
 	@ResponseBody
-	public Map<String, Object> getDocotorPercent(int startTime, int endTime){
+	public Map<String, Object> getDocotorPercent(@RequestParam String startTime, @RequestParam String endTime){
 		Map<String, Object> result = registerService.getDoctorPercent(startTime, endTime);
 		return result;
 	} 
+	
+
+
 }

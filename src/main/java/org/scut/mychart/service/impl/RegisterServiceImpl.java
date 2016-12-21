@@ -176,7 +176,7 @@ public class RegisterServiceImpl implements RegisterService {
 	}
 
 	@Override
-	public Map<String, Object> getHospitalPercent(int startTime, int endTime) {
+	public Map<String, Object> getHospitalPercent(String startTime, String endTime) {
 		Map<String, Object> result = new HashMap<String, Object>();
 		String stime = startTime + "-01-01";
 		String etime = endTime + "-12-31";
@@ -188,9 +188,10 @@ public class RegisterServiceImpl implements RegisterService {
 		double calPer = 0.0;
 		RegisterModel d = null;
 		int index = 0;
+		int days = Integer.valueOf(endTime) - Integer.valueOf(startTime) + 1;
 		for(RegisterModel m : total) {
 			d = day.get(index);
-			calPer = (double)m.getSum() / (d.getMaxNum() * 365 * (endTime - startTime + 1)) * 100;
+			calPer = (double)m.getSum() / (d.getMaxNum() * 365 * days) * 100;
 			per.put(m.getHospital(), Double.valueOf(df.format(calPer)));
 			index++;
 		}
@@ -243,7 +244,7 @@ public class RegisterServiceImpl implements RegisterService {
 	}
 
 	@Override
-	public Map<String, Object> getDepartmentPercent(int startTime, int endTime) {
+	public Map<String, Object> getDepartmentPercent(String startTime, String endTime) {
 		Map<String, Object> result = new HashMap<String, Object>();
 		String stime = startTime + "-01-01";
 		String etime = endTime + "-12-31";
@@ -260,10 +261,11 @@ public class RegisterServiceImpl implements RegisterService {
 		
 		DecimalFormat df = new DecimalFormat("#.##");
 		double calPer = 0.0;
+		int days = Integer.valueOf(endTime) - Integer.valueOf(startTime) + 1;
 		for(RegisterModel m : day) {
 			String key = m.getHospital() + "-" + m.getDepartment();
 			if(totalMap.containsKey(key)) {
-				calPer = (double)totalMap.get(key) / (m.getMaxNum() * 365 * (endTime - startTime + 1)) * 100;
+				calPer = (double)totalMap.get(key) / (m.getMaxNum() * 365 * days) * 100;
 				per.put(key, Double.valueOf(df.format(calPer)));
 			}
 		}
@@ -277,11 +279,25 @@ public class RegisterServiceImpl implements RegisterService {
 			@Override
 			public int compare(Entry<String, Double> o1,
 					Entry<String, Double> o2) {
-				if(o2.getValue() - o1.getValue() >= 0) {
+				if(o1 == null && o2 == null) {  
+				    return 0;  
+				}  
+				if(o1 == null) {  
+				    return -1;  
+				}  
+				if(o2 == null) {  
+				    return 1;  
+				}
+				if(o2.getValue() - o1.getValue() > 0) {
 					return 1;
-				}else {
+				}
+				if(o1.getValue() - o2.getValue() > 0){
 					return -1;
 				}
+				if(o2.getValue() - o1.getValue() == 0) {
+					return 0;
+				}
+				return 0; 
 			}
 		});
 		
@@ -316,7 +332,7 @@ public class RegisterServiceImpl implements RegisterService {
 	}
 
 	@Override
-	public Map<String, Object> getDoctorPercent(int startTime, int endTime) {
+	public Map<String, Object> getDoctorPercent(String startTime, String endTime) {
 		System.setProperty("java.util.Arrays.useLegacyMergeSort", "true");  
 		Map<String, Object> result = new HashMap<String, Object>();
 		String stime = startTime + "-01-01";
@@ -334,10 +350,11 @@ public class RegisterServiceImpl implements RegisterService {
 		
 		DecimalFormat df = new DecimalFormat("#.##");
 		double calPer = 0.0;
+		int days = Integer.valueOf(endTime) - Integer.valueOf(startTime) + 1;
 		for(RegisterModel m : day) {
 			String key = m.getHospital() + "-" + m.getDepartment() + "-" + m.getDoctor();
 			if(totalMap.containsKey(key)) {
-				calPer = (double)totalMap.get(key) / (m.getMaxNum() * 365 * (endTime - startTime + 1)) * 100;
+				calPer = (double)totalMap.get(key) / (m.getMaxNum() * 365 * days) * 100;
 				per.put(key, Double.valueOf(df.format(calPer)));
 			}
 		}
