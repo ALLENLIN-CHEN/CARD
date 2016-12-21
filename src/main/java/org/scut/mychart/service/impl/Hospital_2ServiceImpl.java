@@ -1,12 +1,10 @@
 package org.scut.mychart.service.impl;
 
+import com.github.abel533.echarts.AxisPointer;
 import com.github.abel533.echarts.Label;
 import com.github.abel533.echarts.axis.CategoryAxis;
 import com.github.abel533.echarts.axis.ValueAxis;
-import com.github.abel533.echarts.code.Magic;
-import com.github.abel533.echarts.code.MarkType;
-import com.github.abel533.echarts.code.Tool;
-import com.github.abel533.echarts.code.Trigger;
+import com.github.abel533.echarts.code.*;
 import com.github.abel533.echarts.data.PointData;
 import com.github.abel533.echarts.feature.MagicType;
 import com.github.abel533.echarts.json.GsonOption;
@@ -170,6 +168,7 @@ public class Hospital_2ServiceImpl implements Hospital_2Service {
 
 		option.title("就医人数随时间变化情况");
 		option.tooltip().trigger(Trigger.axis);
+        option.tooltip().axisPointer(new AxisPointer().type(PointerType.shadow));
 		option.legend().data("男","女");
 
 		option.toolbox().show(true).feature(Tool.mark, Tool.dataView,
@@ -359,6 +358,7 @@ public class Hospital_2ServiceImpl implements Hospital_2Service {
 			int t=1;
 			for (Hospital_2 list:totalList){
 				if(t<=10&&i==list.getyear()){
+                    list=totalList.get(totalList.indexOf(list)+1-t+10-t);
 					if(title==6){
 						option.title(i+"年医院就医服务数量排序TOP10");
 						category.data(list.gethospital());
@@ -419,11 +419,12 @@ public class Hospital_2ServiceImpl implements Hospital_2Service {
 			}
 		});
 
-		int t=1;
-		NumberFormat formatter = new DecimalFormat("0.00");
+        int t=1;
+        NumberFormat formatter = new DecimalFormat("0.00");
 		Bar bar = new Bar();
 		for (Hospital_2 list:totalList) {
 			if (t <= 10) {
+                list=totalList.get(10-t);
 				if (title == 7) {
 					option.title("医院就医服务数量排序TOP10");
 					category.data(list.gethospital());
@@ -433,12 +434,12 @@ public class Hospital_2ServiceImpl implements Hospital_2Service {
 					category.data(list.gethospital()+"\n"+list.getdepartment());
 					bar.data((int)((double)(list.getSum()*100)/((double)(list.getSim())*days)));
 				} else if (title == 11) {
-					option.title("医生就医服务数量排序TOP10");
-					category.data(list.gethospital()+"\n"+list.getdepartment()+" "+list.getdoctor());
-					bar.data(formatter.format((double)(list.getSum()*100)/((double)(list.getSim())*days)));
-				}
-				t++;
+                    option.title("医生就医服务数量排序TOP10");
+                    category.data(list.gethospital() + "\n" + list.getdepartment() + " " + list.getdoctor());
+                    bar.data(formatter.format((double) (list.getSum() * 100) / ((double) (list.getSim()) * days)));
+                }
 			}
+			t++;
 		}
 		option.grid().x(170);
 		option.grid().borderWidth(0);
