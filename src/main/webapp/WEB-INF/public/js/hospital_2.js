@@ -33,23 +33,23 @@ $(function() {
 	/***********************************************************************************************************/
 
 	//主题点击
-	$('.item').on('click', function() {
-		//清除定时器
-		clearInterval(timer);
-
-		$('.right-content .single').hide();
-		$('.right-content .multi').show();
-		$('.sub-item-wrap.active').removeClass('active');
-		var self = $(this);
-		if(!self.hasClass('active')) {
-			$('.sub-' + $('.item.active').data('index')).slideToggle();
-			$('.item.active').removeClass('active');
-			self.addClass('active');
-			$('.sub-' + self.data('index')).slideToggle();
-		}
-
-		//	setMultiCharts();
-	});
+	// $('.item').on('click', function() {
+	// 	//清除定时器
+	// 	clearInterval(timer);
+	//
+	// 	$('.right-content .single').hide();
+	// 	$('.right-content .multi').show();
+	// 	$('.sub-item-wrap.active').removeClass('active');
+	// 	var self = $(this);
+	// 	if(!self.hasClass('active')) {
+	// 		$('.sub-' + $('.item.active').data('index')).slideToggle();
+	// 		$('.item.active').removeClass('active');
+	// 		self.addClass('active');
+	// 		$('.sub-' + self.data('index')).slideToggle();
+	// 	}
+	//
+	// 	//	setMultiCharts();
+	// });
 
 	$(document).on('click', '.sub-item-wrap .type', function() {
 		//清除定时器
@@ -69,27 +69,30 @@ $(function() {
 		if(!$('.area-wrap').is(':hidden')) {
 			$('.area-wrap').hide();
 		}
-		if(!$('.time_wrap').is(':hidden')) {
-			$('.time_wrap').hide();
-		}
 
-		if(!$(this).data('no-init')) {
-			var url = $(this).data('url');
-			$.ajax({
-				type: 'GET',
-				url: url,
-				dataType: 'json',
-				success: function(res) {
-					handleCharts(res);
-				},
-				error: function(err) {
-					alert('获取数据出错，错误为：' + err);
-				}
-			});
-		}else {
-			hideLoading();
+		if(!$(this).data('no-init')){
+			$('.time_wrap').hide();
+		}else{
 			$('.time_wrap').show();
 		}
+		var url = $('.sub-item-wrap.active .type').data('url');
+		var params = {
+			startTime: 2010,
+			endTime: 2010
+		}
+
+		$.ajax({
+			type: 'GET',
+			url: url,
+			dataType: 'json',
+			data: params,
+			success: function(res) {
+				handleCharts(res);
+			},
+			error: function(err) {
+				alert('获取数据出错，错误为：' + err);
+			}
+		});
 
 	});
 

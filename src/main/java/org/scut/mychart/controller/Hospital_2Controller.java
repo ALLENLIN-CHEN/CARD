@@ -21,25 +21,6 @@ public class Hospital_2Controller {
     @Autowired
     private Hospital_2Service hospital_2Service;
 
-    @RequestMapping("/hospital_2")
-    @ResponseBody
-    public String toIndex(){
-        //String data = this.hospital_2Service.getHospital_2_2ChartOption().toString();
-        //String data = this.hospital_2Service.getHospital_2_3ChartOption();
-        //String data = this.hospital_2Service.getHospital_2_5ChartOption();
-        String[] p = new String[5];
-        //p[0]="2010-01-01";
-        //p[1]="2012-01-01";
-        //p[2]="孝感市第一人民医院";
-        //p[3]="内科";
-        p[4]="孝南区";
-        String data = this.hospital_2Service.getHospital_2_4ChartOption(p);
-        //String data = this.hospital_2Service.getHospital_2_6810ChartOption(6,p);
-        //String data = this.hospital_2Service.getHospital_2_7911ChartOption(7,p);
-        System.out.println(data);
-        return data;
-    }
-
     @RequestMapping("/hospital_2_2")
     @ResponseBody
     public Map<String, Object> getHos_2(){
@@ -74,7 +55,7 @@ public class Hospital_2Controller {
             p[0]="大悟县";
         }else if(place.equals("anlushi")){
             p[0]="安陆市";
-        }
+        }else p[0] = place;
         Map<String, Object> result = new HashMap<String, Object>();
         result.put("type", "HOS_2_4");
         result.put("data", this.hospital_2Service.getHospital_2_4ChartOption(p));

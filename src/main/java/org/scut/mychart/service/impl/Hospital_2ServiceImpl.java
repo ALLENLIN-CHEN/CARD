@@ -225,7 +225,7 @@ public class Hospital_2ServiceImpl implements Hospital_2Service {
 		for (int i=2010;i<=2015;i++){
 			GsonOption option = new GsonOption();
 			option.title(i+"年"+p[0]+"覆盖率");
-			option.tooltip().formatter("{a} <br/>{b} : {c}%");
+			option.tooltip().formatter("{b} : {c}%");
 
 			option.toolbox().show(true).feature(Tool.mark, Tool.dataView,
 					Tool.restore, Tool.saveAsImage);
@@ -269,7 +269,7 @@ public class Hospital_2ServiceImpl implements Hospital_2Service {
 		String Hospital_2Data = hospital_2RedisDao.getWordcloudData(type);
 
 		if(Hospital_2Data != null && !Hospital_2Data.isEmpty()) {
-			return Hospital_2Data;
+			//return Hospital_2Data;
 		}
 
 		GsonOption baseOption = new GsonOption();
@@ -281,7 +281,7 @@ public class Hospital_2ServiceImpl implements Hospital_2Service {
 			GsonOption option = new GsonOption();
 			option.title(i+"年不同年龄段占比");
 			option.tooltip().trigger(Trigger.item);
-			option.legend().data("儿童","青年","中年","老年");
+			option.legend().data("0-6岁（儿童）","7-40岁（青年）","41-65岁（中年）","66岁以上（老年）");
 			option.tooltip().formatter("{a} <br/>{b} : {c}%");
 
 			option.toolbox().show(true).feature(Tool.mark, Tool.dataView,
