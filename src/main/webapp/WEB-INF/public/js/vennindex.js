@@ -88,13 +88,13 @@ $(function() {
 /**
  * 用于展示echarts图表
  */
-function handleCharts(data) {
+function handleCharts(res) {
 	$('.right-content .single').show();
 	hideLoading();
-	
-	var option =data;
+	// console.log(res.data);
+	var option =res.data;
 	myChart = echarts.init(document.getElementById('chartMain'));
-	myChart.setOption(option);
+	myChart.setOption(eval('('+ option+')'));
 }
 
 /*** loading动画 ***/
