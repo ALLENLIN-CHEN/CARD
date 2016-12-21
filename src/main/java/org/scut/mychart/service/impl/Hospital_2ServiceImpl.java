@@ -1,5 +1,6 @@
 package org.scut.mychart.service.impl;
 
+import com.github.abel533.echarts.Label;
 import com.github.abel533.echarts.axis.CategoryAxis;
 import com.github.abel533.echarts.axis.ValueAxis;
 import com.github.abel533.echarts.code.Magic;
@@ -254,6 +255,7 @@ public class Hospital_2ServiceImpl implements Hospital_2Service {
 		}
 		baseOption.timeline().setAutoPlay(true);
 		baseOption.timeline().playInterval(1500);
+        baseOption.timeline().label().setFormatter("function(s){return (new Date(s)).getFullYear()+'年';}");
 		String result = "{\"baseOption\": "+ baseOption +",\"options\":"+options+"}";
 		//插入缓存中
 		hospital_2RedisDao.setWordcloudData(type, result);
@@ -322,6 +324,7 @@ public class Hospital_2ServiceImpl implements Hospital_2Service {
 
 		baseOption.timeline().setAutoPlay(true);
 		baseOption.timeline().playInterval(1500);
+        baseOption.timeline().label().setFormatter("function(s){return (new Date(s)).getFullYear()+'年';}");
 		String result = "{\"baseOption\": "+ baseOption +",\"options\":"+options+"}";
 
 		//插入缓存中
@@ -337,7 +340,7 @@ public class Hospital_2ServiceImpl implements Hospital_2Service {
 		String Hospital_2Data = hospital_2RedisDao.getWordcloudData(type);
 
 		if(Hospital_2Data != null && !Hospital_2Data.isEmpty()) {
-			return Hospital_2Data;
+			//return Hospital_2Data;
 		}
 
 		GsonOption baseOption = new GsonOption();
@@ -346,47 +349,40 @@ public class Hospital_2ServiceImpl implements Hospital_2Service {
 		for (int i=2010;i<=2015;i++){
 			CategoryAxis category = new CategoryAxis();
 			GsonOption option = new GsonOption();
-			option.tooltip().trigger(Trigger.axis);
+            option.tooltip().trigger(Trigger.axis).formatter("{b} : {c}");
 			option.legend().setShow(false);
-			option.toolbox().show(true).feature(Tool.mark, Tool.dataView, new MagicType(Magic.bar),
+			option.toolbox().show(true).feature(Tool.mark, Tool.dataView,
 					Tool.restore, Tool.saveAsImage);
 			option.calculable(true);
 
-			String cate = "  ";
+			Bar bar = new Bar();
 			int t=1;
 			for (Hospital_2 list:totalList){
 				if(t<=10&&i==list.getyear()){
-					Bar bar = new Bar();
-					bar.barMaxWidth(100);
 					if(title==6){
 						option.title(i+"年医院就医服务数量排序TOP10");
-						bar.name("TOP"+t+":"+list.gethospital());
-						cate+=list.gethospital().substring(0,5)+" ";
+						category.data(list.gethospital());
 					}else if(title==8){
 						option.title(i+"年科室就医服务数量排序TOP10");
-						bar.name("TOP"+t+":"+list.gethospital()+list.getdepartment());
-						if(list.getdepartment().length()>5){
-							cate+=list.getdepartment().substring(0,5)+"      ";
-						}else cate+=list.getdepartment()+"      ";
+						category.data(list.gethospital()+"\n"+list.getdepartment());
 					}else if(title==10){
 						option.title(i+"年医生就医服务数量排序TOP10");
-						bar.name("TOP"+t+":"+list.gethospital()+list.getdepartment()+list.getdoctor());
-						cate+=list.getdoctor()+"          ";
+						category.data(list.gethospital()+"\n"+list.getdepartment()+" "+list.getdoctor());
 					}
 					bar.data(list.getHospital_num());
-					if(t==1) bar.markPoint().data(new PointData().type(MarkType.max).name("最大值"));
-					if(t==10) bar.markPoint().data(new PointData().type(MarkType.min).name("最小值"));
 					t++;
-					option.series(bar);
 				}
 			}
-			category.data(cate);
-			option.xAxis(category);
-			option.yAxis(new ValueAxis());
+			option.grid().x(170);
+			option.grid().borderWidth(0);
+			option.series(bar);
+			option.yAxis(category);
+			option.xAxis(new ValueAxis());
 			options.add(option);
 			if(i==2010){
 				baseOption=option;
 			}
+			baseOption.timeline().label().setFormatter("function(s){return (new Date(s)).getFullYear()+'年';}");
 			baseOption.timeline().data(i+"-01-01");
 		}
 		//插入缓存中
@@ -395,7 +391,6 @@ public class Hospital_2ServiceImpl implements Hospital_2Service {
 		//baseOption.timeline().setShow(false);
 		String result = "{\"baseOption\": "+ baseOption +",\"options\":"+options+"}";
 		hospital_2RedisDao.setWordcloudData(type, result);
-		System.out.println(result);
 		return result;
 	}
 
@@ -410,7 +405,7 @@ public class Hospital_2ServiceImpl implements Hospital_2Service {
 		}
 
 		GsonOption option = new GsonOption();
-		option.tooltip().trigger(Trigger.axis).formatter();
+		option.tooltip().trigger(Trigger.axis).formatter("{b} : {c}");
 		option.toolbox().show(true).feature(Tool.mark, Tool.dataView, new MagicType(Magic.bar),
 				Tool.restore, Tool.saveAsImage);
 		option.calculable(true);
@@ -420,44 +415,36 @@ public class Hospital_2ServiceImpl implements Hospital_2Service {
 		//将全部的Hospital_2按人数排序
 		Collections.sort(totalList, new Comparator<Hospital_2>() {
 			public int compare(Hospital_2 o1, Hospital_2 o2) {
-				//return Integer.valueOf((100*o2.getSim()*days/o2.getSum())).compareTo(Integer.valueOf((100*o1.getSum()*days/o1.getSum())));
 				return o1.getRate(days).compareTo(o2.getRate(days));
 			}
 		});
 
 		int t=1;
-		String cate = "  ";
 		NumberFormat formatter = new DecimalFormat("0.00");
+		Bar bar = new Bar();
 		for (Hospital_2 list:totalList) {
 			if (t <= 10) {
-				Bar bar = new Bar();
 				if (title == 7) {
 					option.title("医院就医服务数量排序TOP10");
-					bar.name("TOP"+t+":"+list.gethospital());
-					cate+=list.gethospital().substring(0,5)+" ";
+					category.data(list.gethospital());
 					bar.data((int)((double)(list.getSum()*100)/((double)(list.getSim())*days)));
 				} else if (title == 9) {
 					option.title("科室就医服务数量排序TOP10");
-					bar.name("TOP"+t+":"+list.gethospital()+list.getdepartment());
-					if(list.getdepartment().length()>5){
-						cate+=list.getdepartment().substring(0,5)+"      ";
-					}else cate+=list.getdepartment()+"      ";
+					category.data(list.gethospital()+"\n"+list.getdepartment());
 					bar.data((int)((double)(list.getSum()*100)/((double)(list.getSim())*days)));
 				} else if (title == 11) {
 					option.title("医生就医服务数量排序TOP10");
-					bar.name("TOP"+t+":"+list.gethospital()+list.getdepartment()+list.getdoctor());
-					cate+=list.getdoctor()+"          ";
+					category.data(list.gethospital()+"\n"+list.getdepartment()+" "+list.getdoctor());
 					bar.data(formatter.format((double)(list.getSum()*100)/((double)(list.getSim())*days)));
 				}
-				if(t==1) bar.markPoint().data(new PointData().type(MarkType.max).name("最大值"));
-				if(t==10) bar.markPoint().data(new PointData().type(MarkType.min).name("最小值"));
 				t++;
-				option.series(bar);
 			}
 		}
-		category.data(cate);
-		option.xAxis(category);
-		option.yAxis(new ValueAxis());
+		option.grid().x(170);
+		option.grid().borderWidth(0);
+		option.series(bar);
+		option.yAxis(category);
+		option.xAxis(new ValueAxis());
 		//插入缓存中
 		hospital_2RedisDao.setWordcloudData(type, option.toString());
 
