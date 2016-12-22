@@ -20,9 +20,8 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.text.DecimalFormat;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
+import java.util.Map;
 
 /**
  * Created by Allen on 2016/11/30.
@@ -303,13 +302,13 @@ public class ExternalServiceImpl implements IExternalService{
 
         String externalData=externalRedisDao.getExternalData(type);
         if(externalData != null && !externalData.isEmpty()) {
-            return externalData;
+            //return externalData;
         }
 
         GsonOption option = new GsonOption();
 
 
-        option.title("用卡行为分析-异地就医申请男女数量统计");
+        option.title("异地就医申请男女比例");
         option.tooltip().trigger(Trigger.axis);
         option.legend().data("男", "女");
         option.toolbox().show(true).feature(Tool.mark, Tool.dataView, new MagicType(Magic.bar),
@@ -360,7 +359,7 @@ public class ExternalServiceImpl implements IExternalService{
 
         String external2Data=external2RedisDao.getExternal2Data(type);
         if(external2Data != null && !external2Data.isEmpty()) {
-            return external2Data;
+           // return external2Data;
         }
 
         GsonOption option = new GsonOption();
@@ -369,7 +368,7 @@ public class ExternalServiceImpl implements IExternalService{
 
         CategoryAxis categoryAxis=new CategoryAxis();
 
-        option.title("用卡行为分析-异地就医申请男女数量统计");
+        option.title("异地就医申请人数统计");
         option.tooltip().trigger(Trigger.axis);
         option.legend().data("男", "女");
         option.toolbox().show(true).feature(Tool.mark, Tool.dataView, new MagicType(Magic.line),
@@ -426,7 +425,7 @@ public class ExternalServiceImpl implements IExternalService{
          */
         String external3Data = external3RedisDao.getExternal3Data(redisKey);
         if(external3Data != null && !external3Data.isEmpty()) {
-            return external3Data;
+           // return external3Data;
         }
 
         String PLACE =getPlace(place);
@@ -465,12 +464,12 @@ public class ExternalServiceImpl implements IExternalService{
         for(String year:yearlist){
             Option option=new Option();
             Gauge cover=new Gauge();
-            option.title().text(PLACE+"异地就医的持卡人分布区域的覆盖率").subtext(year+"仪表盘分析");
-            option.tooltip().formatter("{a} <br/>{b} : {c}%");
+            option.title().text(PLACE+"异地就医的持卡人分布区域的覆盖率");
+            option.tooltip().formatter("{a} <br/>"+year+"年覆盖率 : {c}%");
             option.toolbox().show(true).feature(Tool.mark, Tool.dataView,
                     Tool.restore, Tool.saveAsImage);
             option.calculable(true);
-            cover.data(mapdata.get(year),"覆盖率");
+            cover.data(mapdata.get(year));
             cover.name(PLACE);
             cover.detail().formatter("{value}%");
             option.series(cover);
@@ -496,7 +495,7 @@ public class ExternalServiceImpl implements IExternalService{
          */
         String external4Data = external4RedisDao.getExternal4Data(ChartTypeConstant.EXTERNAL4_REDIS);
         if(external4Data != null && !external4Data.isEmpty()) {
-            return external4Data;
+            //return external4Data;
         }
 
         List<External4> external4List=getExternal4List();
@@ -610,7 +609,7 @@ public class ExternalServiceImpl implements IExternalService{
          */
         String external5Data = external5RedisDao.getExternal5Data(redisKey);
         if(external5Data != null && !external5Data.isEmpty()) {
-            return external5Data;
+            //return external5Data;
         }
 
         String TIME =getTime(year);
@@ -619,7 +618,7 @@ public class ExternalServiceImpl implements IExternalService{
 
         CategoryAxis categoryAxis=new CategoryAxis();
 
-        option.title().text("用卡行为分析-异地就医申请医院low10统计").subtext(TIME+"年度分析");
+        option.title().text("异地就医申请医院Low10统计").subtext(TIME+"年度分析");
         option.tooltip().trigger(Trigger.axis).axisPointer().type(PointerType.shadow);
         option.toolbox().show(true).feature(Tool.mark, Tool.dataView, new MagicType(Magic.bar),
                 Tool.restore, Tool.saveAsImage);
@@ -630,10 +629,9 @@ public class ExternalServiceImpl implements IExternalService{
         for (External5 External5List:external5List){
             count.data(External5List.getNum());
             count.type(SeriesType.bar);
-            //count.name(External5List.getHospital());
             categoryAxis.data(External5List.getHospital());
-            //count.tooltip().trigger(Trigger.axis).formatter(External5List.getHospital()).axisPointer().type(shadow);
         }
+        option.grid().x(250);
         option.xAxis(new ValueAxis().boundaryGap(0d,0.01));
         option.yAxis(categoryAxis);
         option.grid().borderWidth(0);
@@ -660,7 +658,7 @@ public class ExternalServiceImpl implements IExternalService{
          */
         String external6Data = external6RedisDao.getExternal6Data(redisKey);
         if(external6Data != null && !external6Data.isEmpty()) {
-            return external6Data;
+            //return external6Data;
         }
 
         String TIME =getTime(year);
@@ -669,7 +667,7 @@ public class ExternalServiceImpl implements IExternalService{
 
         CategoryAxis categoryAxis=new CategoryAxis();
 
-        option.title().text("用卡行为分析-异地就医申请科室low10统计").subtext(TIME+"年度分析");
+        option.title().text("异地就医申请科室Low10统计").subtext(TIME+"年度分析");
 
         option.toolbox().show(true).feature(Tool.mark, Tool.dataView, new MagicType(Magic.bar),
                 Tool.restore, Tool.saveAsImage);
@@ -686,7 +684,7 @@ public class ExternalServiceImpl implements IExternalService{
         }
 
         option.series(count);
-
+        option.grid().x(250);
         option.xAxis(new ValueAxis().boundaryGap(0d,0.01));
         option.yAxis(categoryAxis);
         option.tooltip().trigger(Trigger.axis).axisPointer().type(PointerType.shadow);
@@ -708,7 +706,7 @@ public class ExternalServiceImpl implements IExternalService{
          */
         String external7Data = external7RedisDao.getExternal7Data(redisKey);
         if(external7Data != null && !external7Data.isEmpty()) {
-            return external7Data;
+            //return external7Data;
         }
 
         String TIME =getTime(year);
@@ -717,7 +715,7 @@ public class ExternalServiceImpl implements IExternalService{
 
         CategoryAxis categoryAxis=new CategoryAxis();
 
-        option.title().text("用卡行为分析-异地就医申请科室low10统计").subtext(TIME+"年度分析");
+        option.title().text("异地就医申请医生Low10统计").subtext(TIME+"年度分析");
         option.tooltip().trigger(Trigger.axis).axisPointer().type(PointerType.shadow);
         option.toolbox().show(true).feature(Tool.mark, Tool.dataView, new MagicType(Magic.bar),
                 Tool.restore, Tool.saveAsImage);
@@ -728,8 +726,9 @@ public class ExternalServiceImpl implements IExternalService{
         for (External7 External7List:external7List){
             count.data(External7List.getNum());
             count.type(SeriesType.bar);
-            categoryAxis.data(External7List.getHospital()+"\n"+External7List.getDepartment()+" "+External7List.getDoctor());
+            categoryAxis.data(External7List.getHospital()+"\n"+External7List.getDepartment()+"——"+External7List.getDoctor());
         }
+        option.grid().x(250);
         option.xAxis(new ValueAxis().boundaryGap(0d,0.01));
         option.yAxis(categoryAxis);
         option.series(count);

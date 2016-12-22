@@ -21,10 +21,10 @@
 	</select>
 	<select id="selectHospital_2_5" parameterType="java.util.Map" resultType="org.scut.mychart.model.Hospital_2" statementType="STATEMENT">
 		select year(operation_time) as "year",
-		case when (year(operation_time)-year(birthday)>65) then "老年"
-		when (year(operation_time)-year(birthday)>40) then "中年"
-		when (year(operation_time)-year(birthday)>6) then "青年"
-		else "儿童" end as "age",
+		case when (year(operation_time)-year(birthday)>65) then "66岁以上（老年）"
+		when (year(operation_time)-year(birthday)>40) then "41-65岁（中年）"
+		when (year(operation_time)-year(birthday)>6) then "7-40岁（青年）"
+		else "0-6岁（儿童）" end as "age",
 		count(distinct person.social_security_card) as "person_num"
 		from hospital_business inner join person
 		on hospital_business.social_security_card=person.social_security_card

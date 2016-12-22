@@ -82,7 +82,7 @@ $(function() {
 		if(!$(this).data('no-init')) {
 			var url = $(this).data('url');
 			$.ajax({
-				type: 'POST',
+				type: 'GET',
 				url: url,
 				dataType: 'json',
 				success: function(res) {
@@ -160,7 +160,7 @@ $(function() {
 				eTime: eTime
 		}
 		$.ajax({
-			type: 'POST',
+			type: 'GET',
 			url: url,
 			dataType: 'json',
 			data: params,

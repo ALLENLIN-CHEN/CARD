@@ -49,6 +49,7 @@ public class ProofServiceImpl implements ProofService {
         List yearlist = Arrays.asList(result.keySet().toArray());
         Collections.sort(yearlist);
         option.timeline().setData(yearlist);
+        option.timeline().label().formatter("function(s) {return s+'年';}");
         option.timeline().setAutoPlay(true);
         option.calculable(true);
 
@@ -57,12 +58,12 @@ public class ProofServiceImpl implements ProofService {
             Chartvenn item = result.get(yearlist.get(i));
             Option option1 = new GsonOption();
             option1.title(title).title().x(X.center);
-            option1.toolbox()
-                    .show(true)
+//            option1.toolbox()
+//                    .show(true)
 //                    .orient(Orient.vertical)
 //                    .x(X.right)
 //                    .y(Y.center)
-                    .feature( Tool.dataView, Tool.restore, Tool.saveAsImage, Tool.mark);
+//                    .feature( Tool.dataView, Tool.restore, Tool.saveAsImage, Tool.mark);
             option1.setCalculable(true);
             Venn data1 = new Venn();
             Gauge data2 = new Gauge();
@@ -73,14 +74,15 @@ public class ProofServiceImpl implements ProofService {
             data1.data(tem);
             tem = new HashMap<String, Object>();
             tem.put("value", item.getperson_num2());
-            tem.put("name", type2);
+            tem.put("name", "\n\n\n\n\n"+type2);
             data1.data(tem);
             tem = new HashMap<String, Object>();
             tem.put("value", item.getperson_num3());
             tem.put("name", "公共");
             data1.data(tem);
 
-            data1.itemStyle().normal().label().show(true).textStyle().fontFamily("Arial, Verdana, sans-serif").fontSize(16);
+            data1.itemStyle().normal().label().show(true).textStyle().fontFamily("Arial, Verdana, sans-serif").fontSize(16).color("gray");
+            data1.itemStyle().normal().label().position("center");
             data1.itemStyle().normal().labelLine().show(false).length(10).lineStyle().width(1).type(LineType.solid);
             data1.itemStyle().emphasis().color("#cc99cc").borderWidth(3).borderColor("#996699");
             data1.name(title+"交集");
