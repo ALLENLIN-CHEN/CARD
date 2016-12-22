@@ -606,7 +606,8 @@ function setFunnelOption(obj){
 	            
 	            tooltip: {
 	                trigger: 'item',
-	                formatter: "{a} <br/>{b} : {c}%"
+	                //formatter: "{a} <br/>{b} : {c}%"
+	                formatter: "{b} : {c}%"
 	            },
 	            toolbox: {
 	                feature: {
