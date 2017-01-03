@@ -117,4 +117,14 @@
 		]]>
 	</select>
 	
+	<select id="getAreaByYear" resultType="org.scut.mychart.model.RegisterModel" useCache="true">
+		<![CDATA[
+			select year(operation_time) as year, count(*) as sum, area 
+			from hospital_business 
+			where operation='挂号' 
+			group by year, area 
+			order by year, area
+		]]>
+	</select>
+	
 </mapper>

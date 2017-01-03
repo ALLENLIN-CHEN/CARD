@@ -255,7 +255,7 @@ function getRegisterFunnel(data) {
 		];
 		
 		timeLineOptions.push({
-			title : {text: props[index] + '年年龄段占比'},
+			title : {text: props[index] + '年各年龄段占比'},
 			series: [
 			   {
 				  data: arr
@@ -459,7 +459,7 @@ function getRegisterHospitalPercent(data) {
 	    ],
 	    series : [
 	        {
-	            name:'top10',
+	            name:'前10',
 	            type:'bar',
 	            label: {
 	                normal: {
@@ -638,7 +638,7 @@ function getRegisterDepartmentPercent(data) {
 	    ],
 	    series : [
 	        {
-	            name:'top10',
+	            name:'前10',
 	            type:'bar',
 	            label: {
 	                normal: {
@@ -817,7 +817,7 @@ function getRegisterDoctorPercent(data) {
 	    ],
 	    series : [
 	        {
-	            name:'top10',
+	            name:'前10',
 	            type:'bar',
 	            label: {
 	                normal: {

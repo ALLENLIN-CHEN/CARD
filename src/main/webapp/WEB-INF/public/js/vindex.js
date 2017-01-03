@@ -124,8 +124,8 @@ $(function() {
 		
 		var url = $('.sub-item-wrap.active .type').data('url');
 		var params = {
-				startTime: startTime,
-				endTime: endTime
+				startTime: startTime+'',
+				endTime: endTime+''
 		}
 		
 		

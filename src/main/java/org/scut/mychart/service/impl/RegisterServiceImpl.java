@@ -397,4 +397,115 @@ public class RegisterServiceImpl implements RegisterService {
 		return result;
 	}
 
+	@Override
+	public Map<String, Object> getScreenData() {
+		Map<String, Object> result = new HashMap<String, Object>();
+		String key;
+		//获取2010-2015的各地区的挂号业务数
+		List<RegisterModel> areaDay = registerMapper.getAreaByYear();
+		Map<String, List<Integer>> area = new HashMap<String, List<Integer>>();
+		for(RegisterModel m : areaDay) {
+			key = m.getArea();
+			if(!area.containsKey(key)) {
+				area.put(key, new ArrayList<Integer>());
+			}
+			
+			area.get(key).add(m.getSum());
+		}
+		
+		//获取年龄段的比例
+		List<RegisterModel> ageData = registerMapper.getAgeRange(DictionaryString.BUSINESS_REGISTER);
+		Map<String, Map<String, Integer>> age = new HashMap<String, Map<String,Integer>>();
+		for(RegisterModel m : ageData) {
+			key = String.valueOf(m.getYear());
+			if(age.containsKey(key)) {
+				age.get(key).put("total", age.get(key).get("total") + m.getSum());
+			}else {
+				age.put(key, new HashMap<String, Integer>());
+				age.get(key).put("total", m.getSum());
+			}
+			
+			if(m.getYear() - m.getBirth() <= 6) {
+				if(age.get(key).containsKey(DictionaryString.CHILD)) {
+					age.get(key).put(DictionaryString.CHILD, age.get(key).get(DictionaryString.CHILD) + m.getSum());
+				}else {
+					age.get(key).put(DictionaryString.CHILD, m.getSum());
+				}
+			} else if(m.getYear() - m.getBirth() >= 7 && m.getYear() - m.getBirth() <= 40) {
+				if(age.get(key).containsKey(DictionaryString.YOUTH)) {
+					age.get(key).put(DictionaryString.YOUTH, age.get(key).get(DictionaryString.YOUTH) + m.getSum());
+				}else {
+					age.get(key).put(DictionaryString.YOUTH, m.getSum());
+				}
+			} else if(m.getYear() - m.getBirth() >= 41 && m.getYear() - m.getBirth() <= 65) {
+				if(age.get(key).containsKey(DictionaryString.MIDLIFE)) {
+					age.get(key).put(DictionaryString.MIDLIFE, age.get(key).get(DictionaryString.MIDLIFE) + m.getSum());
+				}else {
+					age.get(key).put(DictionaryString.MIDLIFE, m.getSum());
+				}
+			} else if(m.getYear() - m.getBirth() >= 66) {
+				if(age.get(key).containsKey(DictionaryString.OLDER)) {
+					age.get(key).put(DictionaryString.OLDER, age.get(key).get(DictionaryString.OLDER) + m.getSum());
+				}else {
+					age.get(key).put(DictionaryString.OLDER, m.getSum());
+				}
+			} 
+		}
+		
+		//获取性别的比例
+		List<RegisterModel> sexData = registerMapper.getCountByGender(DictionaryString.BUSINESS_REGISTER);
+		List<Integer> maleCount = new ArrayList<Integer>();
+		List<Integer> femaleCount = new ArrayList<Integer>();
+		
+		for(RegisterModel m : sexData) {
+			if(m.getSex().equals(DictionaryString.MALE)) {
+				maleCount.add(m.getSum());
+			}else if(m.getSex().equals(DictionaryString.FEMALE)) {
+				femaleCount.add(m.getSum());
+			}
+		}
+		
+		//获取前10医院
+		List<RegisterModel> hospData = registerMapper.getHospitalTotal(DictionaryString.BUSINESS_REGISTER);
+		Map<String, List<RegisterModel>> hosp = new HashMap<String, List<RegisterModel>>();
+		for(RegisterModel m : hospData) {
+			key = String.valueOf(m.getYear());
+			if(hosp.containsKey(key)) {
+				if(hosp.get(key).size() >= 10) {
+					continue;
+				}
+				
+				hosp.get(key).add(m);
+			}else {
+				hosp.put(key, new ArrayList<RegisterModel>());
+				hosp.get(key).add(m);
+			}
+		}
+		
+		//获取前10科室
+		List<RegisterModel> depData = registerMapper.getDepartmentTotal(DictionaryString.BUSINESS_REGISTER);
+		Map<String, List<RegisterModel>> dep = new HashMap<String, List<RegisterModel>>();
+		for(RegisterModel m : depData) {
+			key = String.valueOf(m.getYear());
+			if(dep.containsKey(key)) {
+				if(dep.get(key).size() >= 10) {
+					continue;
+				}
+				
+				dep.get(key).add(m);
+			}else {
+				dep.put(key, new ArrayList<RegisterModel>());
+				dep.get(key).add(m);
+			}
+		}
+		
+		result.put("area", area);
+		result.put("age", age);
+		result.put("female", femaleCount);
+		result.put("male", maleCount);
+		result.put("hosp", hosp);
+		result.put("dep", dep);
+		return result;
+	}
+
 }

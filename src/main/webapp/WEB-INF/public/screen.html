@@ -1,0 +1,98 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=1920">
+		<link rel="stylesheet" href="css/show.css">
+		<script type="text/javascript" src="js/jquery.min.js"></script>
+		<script type="text/javascript" src="js/echarts3/echarts.js"></script>
+		<script type="text/javascript" src="js/xiaogan.js"></script>
+		<script type="text/javascript" src="js/countUp.js"></script>
+		<script type="text/javascript" src="js/show.js"></script>
+		<title>用户行为挂号大屏展示</title>
+	</head>
+	<body>
+		<div class="loading">
+			<img class="icon" alt="loading" src="images/loading.gif">
+		</div>
+		
+		<div class="wrap-theme">
+			<div class="theme-content">用卡行为挂号业务分析</div>
+		</div>
+
+		<div class="wrap-count">
+			<div class="count-content">
+				<div class="title"><span class="year">2010</span>年挂号业务数</div>
+				<div id="count"></div>
+			</div>
+		</div>
+
+		<div class="wrap-line-title">
+			<div class="line-title-content">各地区全季度挂号业务数</div>
+		</div>
+		<div class="wrap-line">
+			<div class="line-content wrap">
+				<div id="area-line"></div>
+			</div>
+		</div>
+
+		<div class="wrap-sex-title">
+			<div class="sex-title-content">人群占比分析</div>
+		</div>
+
+		<div class="wrap-sex">
+			<div class="sex-content wrap">
+				<div id="sex-pie" class="sub"></div>
+				<div id="age-ring" class="sub"></div>
+			</div>
+		</div>
+
+		<div class="wrap-hosp-title">
+			<div class="hosp-title-content">医院前10排名</div>
+		</div>
+
+		<div class="wrap-hosp">
+			<div class="hosp-content wrap">
+				<div class="wrap-hosp-table">
+					<div class="list-title">
+						<div class="index-list"></div>
+						<div class="column-title hosp-name-title">医院名称</div>
+						<div class="column-title hosp-business-title">业务数</div>
+						<div class="column-title hosp-percent-title">占比</div>
+					</div>
+					<div class="content">
+						<div class="mask">
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		<div class="wrap-dep-title">
+			<div class="dep-title-content">医院科室前10排名</div>
+		</div>
+
+		<div class="wrap-dep">
+			<div class="dep-content wrap">
+				<div class="wrap-dep-table">
+					<div class="list-title">
+						<div class="index-list"></div>
+						<div class="column-title hosp-name-title">医院名称</div>
+						<div class="column-title dep-name-title">科室名称</div>
+						<div class="column-title dep-business-title">业务数</div>
+					</div>
+
+					<div class="content">
+						<div class="mask">
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="wrap-map">
+			<div class="map-content" id="map-content"></div>
+		</div>
+
+	</body>
+</html>

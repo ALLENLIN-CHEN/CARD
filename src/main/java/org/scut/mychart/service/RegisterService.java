@@ -23,4 +23,9 @@ public interface RegisterService {
 	public Map<String, Object> getDoctorTotal();
 
 	public Map<String, Object> getDoctorPercent(String startTime, String endTime);
+	
+	/**
+	 * 用于获取关于大屏的展示数据
+	 */
+	public Map<String, Object> getScreenData();
 }

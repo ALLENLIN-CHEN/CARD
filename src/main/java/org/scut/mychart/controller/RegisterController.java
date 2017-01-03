@@ -86,6 +86,11 @@ public class RegisterController {
 		return result;
 	} 
 	
-
+	@RequestMapping("/screen")
+	@ResponseBody
+	public Map<String, Object> getScreenData(){
+		Map<String, Object> result = registerService.getScreenData();
+		return result;
+	} 
 
 }
