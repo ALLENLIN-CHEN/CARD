@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.EnableLoadTimeWeaving;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
@@ -96,7 +97,7 @@ public class OtherHosController {
 	 */
 	@RequestMapping("/otherGetHisHosPercent")
     @ResponseBody
-    public Map<String, Object> getHisHosPercent(String sTime, String eTime){
+    public Map<String, Object> getHisHosPercent(@RequestParam String sTime, @RequestParam String eTime){
 		Map<String, Object> map =  otherHosService.getHistogramData_hosPercent(sTime, eTime);
         return map;
     }
@@ -109,7 +110,7 @@ public class OtherHosController {
 	 */
 	@RequestMapping("/otherGetHisDepPercent")
     @ResponseBody
-    public Map<String, Object> getHisDepPercent(String sTime, String eTime){
+    public Map<String, Object> getHisDepPercent(@RequestParam String sTime,@RequestParam String eTime){
 		Map<String, Object> map =  otherHosService.getHistogramData_depPercent(sTime, eTime);
         return map;
     }

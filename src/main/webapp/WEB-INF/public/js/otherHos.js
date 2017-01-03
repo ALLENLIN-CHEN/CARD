@@ -82,7 +82,7 @@ $(function() {
 		if(!$(this).data('no-init')) {
 			var url = $(this).data('url');
 			$.ajax({
-				type: 'POST',
+				type: 'GET',
 				url: url,
 				dataType: 'json',
 				success: function(res) {
@@ -160,7 +160,7 @@ $(function() {
 				eTime: eTime
 		}
 		$.ajax({
-			type: 'POST',
+			type: 'GET',
 			url: url,
 			dataType: 'json',
 			data: params,
@@ -606,7 +606,8 @@ function setFunnelOption(obj){
 	            
 	            tooltip: {
 	                trigger: 'item',
-	                formatter: "{a} <br/>{b} : {c}%"
+	                //formatter: "{a} <br/>{b} : {c}%"
+	                formatter: "{b} : {c}%"
 	            },
 	            toolbox: {
 	                feature: {

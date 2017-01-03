@@ -318,7 +318,7 @@ public class OtherHosServiceimpl implements OtherHosService{
 		
 		Map<String,Object> data = new HashMap<String,Object>();
 		String stime = sTime + "-01-01";
-		String etime = eTime+"-12-31";
+		String etime = eTime+ "-12-31";
 		List<OtherHosModel> sum  = this.otherhos.selectDepPercent(stime, etime);
 		List<OtherHosModel> max = this.otherhos.selectDepMax(stime, etime);
 		List<String> time = new ArrayList<String>();
