@@ -25,15 +25,15 @@ public class ProofServiceImpl implements ProofService {
         param.put("type1", type1);
         param.put("type2", type2);
         List<Chartvenn> list12 = this.chartsDao.selectPersonnum12(param);
-        List<Chartvenn> list3 = this.chartsDao.selectPersonnum3(param);
+//        List<Chartvenn> list3 = this.chartsDao.selectPersonnum3(param);
         for (int i = 0; i < list12.size(); i++) {
-            Chartvenn i3 = list3.get(i);
+//            Chartvenn i3 = list3.get(i);
             Chartvenn i12 = list12.get(i);
-            if (!i3.getyear().equals(i12.getyear())) return null;
-            Chartvenn item = result.get(i3.getyear().toString());
+//            if (!i3.getyear().equals(i12.getyear())) return null;
+            Chartvenn item = result.get(i12.getyear().toString());
             if (item == null) {
                 item = i12;
-                item.setperson_num3(i3.getperson_num3());
+//                item.setperson_num3(i3.getperson_num3());
                 result.put(item.getyear().toString(), item);
             }
         }
