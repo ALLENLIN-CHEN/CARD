@@ -5,40 +5,73 @@
     <cache size="1024" readOnly="true"/>
 
 
-    <select id="selectPersonnum12" parameterType="java.util.Map" resultType="org.scut.mychart.model.Chartvenn"
+    <select id="selectPersonnum123" parameterType="java.util.Map" resultType="org.scut.mychart.model.Chartvenn"
             statementType="STATEMENT">
-select person_num1,person_num2,person_num3,T3.year
+   select person_num1,person_num2,person_num3,T3.year
 from
 (
 select person_num1,person_num2,T21.year1 as "year"
         from
       (
           select
-          count (distinct social_security_card) as person_num1,operation_year as year1,operation
-          from hospital_business_view
-          where operation="${type1}"
-          group by operation_year,operation
+          count (distinct social_security_card) as person_num1,year(operation_time) as year1,operation
+          from hospital_business
+          where operation='${type1}'
+          group by year1,operation
         )as T21
         join
         (
           select
-          count (distinct social_security_card) as person_num2,operation_year as year2,operation
-          from hospital_business_view
-          where  operation="${type2}"
-          group by operation_year,operation
+          count (distinct social_security_card) as person_num2,year(operation_time) as year2,operation
+          from hospital_business
+          where  operation='${type2}'
+          group by year2,operation
         )as T22
         on T21.year1 =T22.year2
 )as T3
 join
 (
 select
-     count (distinct h1.social_security_card) as person_num3,h1.operation_year as year
-     from hospital_business_view h1 join hospital_business_view h2 on h1.social_security_card=h2.social_security_card and h1.operation_year=h2.operation_year
-     where h1.operation="${type1}" and h2.operation="${type2}"
-     group by h1.operation_year
+     count (distinct h1.social_security_card) as person_num3,year(h1.operation_time) as year
+     from hospital_business h1 join hospital_business h2 on h1.social_security_card=h2.social_security_card and year(h1.operation_time)=year(h2.operation_time)
+     where h1.operation='${type1}' and h2.operation='${type2}'
+     group by year
 ) as T4
 on T3.year = T4.year
 ORDER  by T3.year desc
+
+--     select person_num1,person_num2,person_num3,T3.year
+--     from
+--     (
+--         select person_num1,person_num2,T21.year1 as "year"
+--         from
+--       (
+--           select
+--           count (distinct social_security_card) as person_num1,operation_year as year1,operation
+--           from hospital_business_view
+--           where operation="${type1}"
+--           group by operation_year,operation
+--         )as T21
+--         join
+--         (
+--           select
+--           count (distinct social_security_card) as person_num2,operation_year as year2,operation
+--           from hospital_business_view
+--           where  operation="${type2}"
+--           group by operation_year,operation
+--         )as T22
+--         on T21.year1 =T22.year2
+--     )as T3
+--     join
+--     (
+--           select
+--           count (distinct h1.social_security_card) as person_num3,h1.operation_year as year
+--           from hospital_business_view h1 join hospital_business_view h2 on h1.social_security_card=h2.social_security_card and h1.operation_year=h2.operation_year
+--           where h1.operation="${type1}" and h2.operation="${type2}"
+--           group by h1.operation_year
+--     ) as T4
+--     on T3.year = T4.year
+--     ORDER  by T3.year desc
 	</select>
 
     <!--<select id="selectPersonnum3" parameterType="java.util.Map" resultType="org.scut.mychart.model.Chartvenn"-->
