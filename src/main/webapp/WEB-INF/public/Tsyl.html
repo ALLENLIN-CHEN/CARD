@@ -20,7 +20,8 @@
 	<!-- 滚动条样式 -->
 	<link href="css/jquery.mCustomScrollbar.min.css" rel="stylesheet">
 
-	<script type="text/javascript" src="js/jquery-1.7.2.min.js"></script>
+	<script type="text/javascript" src="js/jquery.min.js"></script>
+	<script type="text/javascript" src="js/bootstrap.min.js"></script>
 	<script type="text/javascript" src="js/mCustomScrollbar/jquery.mCustomScrollbar.concat.min.js"></script>
     <script src="js/hideshow.js" type="text/javascript"></script>
     <script src="js/jquery.tablesorter.min.js" type="text/javascript"></script>
@@ -43,13 +44,45 @@
 			<a id="logo" href="#">社保大数据业务平台</a>
 			<nav>
 				<ul class="nav navbar-nav pull-right">
-					<li><a href="vindex.html">挂号业务分析</a></li>
-					<li><a href="try.html">住院登记业务分析</a></li>
-					<li><a href="hos_2.html">就医服务业务分析</a></li>
-					<li><a href="vennindex.html">电子凭证业务分析</a></li>
-					<li><a href="extindex.html">异地就医申请业务分析</a></li>
-					<li><a href="chartExpense.html">医疗费用报销业务分析</a></li>
-					<li><a href="Tsyl.html">特殊医疗待遇业务分析</a></li>
+					<li class="dropdown">
+	                	<a id="dLabel" data-target="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">用卡行为分析<span class="caret"></span></a>
+	                	<ul class="dropdown-menu multi-level" role="menu" aria-labelledby="dropdownMenu">
+		                			<li><a href="/mychart/vindex.html">挂号业务分析</a></li>
+									<li><a href="/mychart/try.html">住院登记业务分析</a></li>
+									<li><a href="/mychart/hos_2.html">就医服务业务分析</a></li>
+									<li><a href="/mychart/vennindex.html">电子凭证业务分析</a></li>
+									<li><a href="/mychart/extindex.html">异地就医申请业务分析</a></li>
+									<li><a href="/mychart/chartExpense.html">医疗费用报销业务分析</a></li>
+									<li><a href="/mychart/Tsyl.html">特殊医疗待遇业务分析</a></li>
+									<li><a href="/mychart/clinic.html">门诊统筹申请业务分析</a></li>
+	                	</ul>
+	                </li>
+	                <li class="dropdown">
+	                	<a id="dLabel" data-target="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">企业员工参保基数分析<span class="caret"></span></a>
+	                	<ul class="dropdown-menu multi-level" role="menu" aria-labelledby="dropdownMenu">
+		                			<li><a href="/company/vindex.html">单位类型社保参保基数统计分析</a></li>
+									<li><a href="/company/base_3.html">各经济类型社保参保基数统计分析</a></li>
+									<li><a href="/company/industry.html">各行业社保参保基数统计分析</a></li>
+									<li><a href="/company/difindex.html">企业员工参保基数统计分析</a></li>
+	                	</ul>
+	                </li>
+	                
+	                <li class="dropdown">
+	                	<a id="dLabel" data-target="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">业务综合分析<span class="caret"></span></a>
+	                	<ul class="dropdown-menu multi-level" role="menu" aria-labelledby="dropdownMenu">
+		                			<li><a href="/mychart/screen.html" target="_blank">挂号业务综合分析</a></li>
+									<li><a href="/company/maptest.html" target="_blank">就医服务综合分析</a></li>
+									<li><a href="/company/bigscreenshow.html" target="_blank">企业员工参保基数综合分析</a></li>
+									<li><a href="/company/industrydisplay.html" target="_blank">各行业社保参保基数综合分析</a></li>
+	                	</ul>
+	                </li>
+<!-- 					<li><a href="vindex.html">挂号业务分析</a></li> -->
+<!-- 					<li><a href="try.html">住院登记业务分析</a></li> -->
+<!-- 					<li><a href="hos_2.html">就医服务业务分析</a></li> -->
+<!-- 					<li><a href="vennindex.html">电子凭证业务分析</a></li> -->
+<!-- 					<li><a href="extindex.html">异地就医申请业务分析</a></li> -->
+<!-- 					<li><a href="chartExpense.html">医疗费用报销业务分析</a></li> -->
+<!-- 					<li><a href="Tsyl.html">特殊医疗待遇业务分析</a></li> -->
 <!-- 	                <li><a href="https://rubytutorial-jungieve.c9users.io/">主页</a></li> -->
 <!-- 	                <li><a href="https://rubytutorial-jungieve.c9users.io/help">帮助</a></li> -->
 <!-- 	                <li><a href="/ETL/html/index.html">预处理</a></li> -->
