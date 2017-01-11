@@ -185,6 +185,13 @@
 		<scope>system</scope>
 		<systemPath>${basedir}/libs/ImpalaJDBC41.jar</systemPath>
 	</dependency>
+	  <dependency>
+		  <groupId>kylin</groupId>
+		  <artifactId>kylin</artifactId>
+		  <version>1.6.0</version>
+		  <scope>system</scope>
+		  <systemPath>${basedir}/libs/kylin-jdbc-1.6.0-SNAPSHOT.jar</systemPath>
+	  </dependency>
 	  <!--Echart类包-->
 	  <dependency>
 		  <groupId>com.github.abel533</groupId>

@@ -12,6 +12,7 @@ import java.util.Map.Entry;
 import javax.swing.plaf.DesktopIconUI;
 
 import org.scut.mychart.mapper.RegisterMapper;
+import org.scut.mychart.mapperKylin.RegisterMapperKylin;
 import org.scut.mychart.model.RegisterModel;
 import org.scut.mychart.service.RegisterService;
 import org.scut.mychart.util.DictionaryString;
@@ -23,6 +24,7 @@ public class RegisterServiceImpl implements RegisterService {
 
 	@Autowired
 	private RegisterMapper registerMapper;
+//	private RegisterMapperKylin registerMapper;
 	
 	@Override
 	public Map<String, Object> getCountByGender() {

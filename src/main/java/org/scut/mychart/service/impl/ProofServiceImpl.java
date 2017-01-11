@@ -6,6 +6,7 @@ import com.github.abel533.echarts.json.GsonOption;
 import com.github.abel533.echarts.series.Gauge;
 import com.github.abel533.echarts.series.Venn;
 import org.scut.mychart.mapper.ProofMapper;
+import org.scut.mychart.mapperKylin.ProofMapperKylin;
 import org.scut.mychart.model.Chartvenn;
 import org.scut.mychart.service.ProofService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,7 @@ import java.util.*;
 @Service
 public class ProofServiceImpl implements ProofService {
     @Autowired
+//    private ProofMapperKylin chartsDao;
     private ProofMapper chartsDao;
 
 
@@ -24,16 +26,12 @@ public class ProofServiceImpl implements ProofService {
         HashMap<String, String> param = new HashMap<String, String>();
         param.put("type1", type1);
         param.put("type2", type2);
-        List<Chartvenn> list12 = this.chartsDao.selectPersonnum12(param);
-        List<Chartvenn> list3 = this.chartsDao.selectPersonnum3(param);
+        List<Chartvenn> list12 = this.chartsDao.selectPersonnum123(param);
         for (int i = 0; i < list12.size(); i++) {
-            Chartvenn i3 = list3.get(i);
             Chartvenn i12 = list12.get(i);
-            if (!i3.getyear().equals(i12.getyear())) return null;
-            Chartvenn item = result.get(i3.getyear().toString());
+            Chartvenn item = result.get(i12.getyear().toString());
             if (item == null) {
                 item = i12;
-                item.setperson_num3(i3.getperson_num3());
                 result.put(item.getyear().toString(), item);
             }
         }

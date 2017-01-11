@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.scut.mychart.mapperKylin.RegisterMapperKylin">
+	<!-- 开启二级缓存 -->
+	<cache size="1024" readOnly="true" />
+	
+	<select id="getCountByGender" resultType="org.scut.mychart.model.RegisterModel" useCache="true">
+		<![CDATA[
+			select h.operation_year as "year", p.sex as sex, count(*) as "sum"
+			from hospital_business_view h inner join  person_view p  on h.social_security_card = p.social_security_card
+			where h.operation = #{0}
+			group by operation_year, sex
+			order by operation_year;
+		]]>
+	</select>
+
+	<select id="getAreaCoverage" resultType="org.scut.mychart.model.RegisterModel" useCache="true">
+		<![CDATA[
+			select operation_year as "year", area, count(*) as "sum"
+			from hospital_business_view
+			where operation = #{0}
+			group by operation_year, area
+			order by operation_year
+		]]>
+	</select>
+
+	<select id="getAgeRange" resultType="org.scut.mychart.model.RegisterModel" useCache="true">
+		<![CDATA[
+			SELECT count(*) as "sum",operation_year as "year",birthyear as birth
+			FROM hospital_business_view join person_view on hospital_business_view.social_security_card=person_view.social_security_card
+			where operation = #{0}
+			group by birthyear,operation_year
+			order by operation_year,birthyear
+		]]>
+	</select>
+
+	<select id="getHospitalTotal" resultType="org.scut.mychart.model.RegisterModel" useCache="true">
+		<![CDATA[
+			SELECT count(*) as "sum",operation_year as "year",hospital
+			FROM hospital_business_view
+			where operation = #{0}
+			group by operation_year,hospital
+			order by operation_year,count(*) desc
+		]]>
+	</select>
+
+	<select id="getHospitalByTime" resultType="org.scut.mychart.model.RegisterModel" useCache="true">
+		<![CDATA[
+			SELECT count(*) as "sum",hospital
+			FROM hospital_business_view
+			where operation = '${param1}'  and operation_time between '${param2}' and '${param3}'
+			group by hospital
+			order by hospital
+		]]>
+	</select>
+
+	<select id="getHospitalMaxByDay" resultType="org.scut.mychart.model.RegisterModel" useCache="true">
+		<![CDATA[
+			select temp.hospital as hospital, max(temp.dsum) as maxNum 
+            from (
+                select hospital, count(*) as dsum
+                from hospital_business_view
+               	where operation = '${param1}'  and operation_time between '${param2}' and '${param3}'
+                group by hospital,  operation_time
+                ) temp
+            group by hospital
+            order by hospital
+		]]>
+	</select>
+
+	<select id="getDepartmentTotal" resultType="org.scut.mychart.model.RegisterModel" useCache="true">
+		<![CDATA[
+			SELECT count(*) as "sum",operation_year as "year",hospital, department
+			FROM hospital_business_view
+			where operation = #{0}
+			group by operation_year,hospital, department
+			order by operation_year,count(*) desc
+		]]>
+	</select>
+	
+	<select id="getDepartmentByTime" resultType="org.scut.mychart.model.RegisterModel" useCache="true">
+		<![CDATA[
+			SELECT count(*) as "sum",hospital,department
+			FROM hospital_business_view
+			where operation = '${param1}'  and operation_time between '${param2}' and '${param3}'
+			group by hospital, department
+			order by hospital
+		]]>
+	</select>
+	
+	<select id="getDepartmentMaxByDay" resultType="org.scut.mychart.model.RegisterModel" useCache="true">
+		<![CDATA[
+			select temp.hospital as hospital, temp.department as department, max(temp.dsum) as maxNum 
+            from (
+                select hospital, department, count(*) as dsum
+                from hospital_business_view
+                where operation = '${param1}'  and operation_time between '${param2}' and '${param3}'
+                group by hospital, department, operation_time
+                ) temp
+            group by hospital, department
+            order by hospital
+		]]>
+	</select>
+	
+	<select id="getDoctorTotal" resultType="org.scut.mychart.model.RegisterModel" useCache="true">
+		<![CDATA[
+			select count(*) as "sum", operation_year as "year", hospital, department, doctor
+            from hospital_business_view
+            where operation = #{0}
+            group by operation_year, hospital, department, doctor
+            order by operation_year,count(*) desc
+		]]>
+	</select>
+	
+	<select id="getDoctorByTime" resultType="org.scut.mychart.model.RegisterModel" useCache="true">
+		<![CDATA[
+			select count(*) as "sum", hospital, department, doctor
+            from hospital_business_view
+            where operation = '${param1}'  and operation_time between '${param2}' and '${param3}'
+            group by  hospital, department, doctor
+            order by hospital
+		]]>
+	</select>
+	
+	<select id="getDoctorMaxByDay" resultType="org.scut.mychart.model.RegisterModel" useCache="true">
+		<![CDATA[
+			select temp.hospital as hospital, temp.department as department,temp.doctor as doctor, max(temp.dsum) as maxNum
+            from (
+                select hospital, department, doctor, count(*) as dsum
+                from hospital_business_view
+                where operation = '${param1}'  and operation_time between '${param2}' and '${param3}'
+                group by hospital, department, doctor, operation_time
+                ) temp
+            group by hospital, department, doctor
+            order by hospital
+		]]>
+	</select>
+	
+</mapper>
