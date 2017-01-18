@@ -288,6 +288,7 @@ function getAreaLine() {
 	    },
 	    yAxis: {
 	        type: 'value',
+	        scale: true,
 	        axisLabel: {
 	        	textStyle: {
                     color: '#fff',
