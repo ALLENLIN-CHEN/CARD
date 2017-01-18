@@ -493,8 +493,8 @@ function getAgeRing() {
 	        {
 	            name:'年龄占比',
 	            type:'pie',
-	            radius: ['50%', '79%'],
-	            center: ['49%', '60%'],
+	            radius: ['45%', '76%'],
+	            center: ['45%', '60%'],
 	            // width: '35%',
             	funnelAlign: 'left',
 	            itemStyle : {
@@ -513,8 +513,8 @@ function getAgeRing() {
 	        {
 	            name:'年龄占比',
 	            type:'pie',
-	            radius: ['45%', '79%'],
-	            center: ['49%', '60%'],
+	            radius: ['45%', '76%'],
+	            center: ['45%', '60%'],
             	funnelAlign: 'left',
 	            itemStyle : {
 	                normal : {
