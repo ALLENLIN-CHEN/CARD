@@ -19,8 +19,9 @@ body {
     height: 1080px;
     background: url('../images/background2.png') 0% 0% / 100%;
 /*     transform: scale(0.991146); */
-    transform-origin: left top 0px;
+/*     transform-origin: left top 0px; */
     /*overflow: hidden;*/
+    overflow-y: hidden;
     font-family: 微软雅黑, MicrosoftYaHei, sans-serif;
 }
 
