@@ -53,7 +53,8 @@ function getRegisterBarX(data) {
 		    },
 		    xAxis : [
 	             {
-	                 type : 'value'
+	                 type : 'value',
+	                 scale: true
 	             }
 	        ],
 		    yAxis : [
@@ -127,7 +128,8 @@ function getRegisterLine(data) {
 	    ],
 	    yAxis : [
 	        {
-	            type : 'value'
+	            type : 'value',
+	            scale: true
 	        }
 	    ],
 	    series : [
@@ -392,7 +394,8 @@ function getRegisterHospitalTotal(data) {
 			    ],
 			    yAxis : [
 			       {
-			           type : 'value'
+			           type : 'value',
+			           scale: true
 			       }
 			    ],
 				grid: {
@@ -454,7 +457,8 @@ function getRegisterHospitalPercent(data) {
 	    ],
 	    yAxis : [
 	        {
-	            type : 'value'
+	            type : 'value',
+	            scale: true
 	        }
 	    ],
 	    series : [
@@ -565,7 +569,8 @@ function getRegisterDepartmentTotal(data) {
 			    ],
 			    yAxis : [
 			       {
-			           type : 'value'
+			           type : 'value',
+			           scale: true
 			       }
 			    ],
 				grid: {
@@ -633,7 +638,8 @@ function getRegisterDepartmentPercent(data) {
 	    ],
 	    yAxis : [
 	        {
-	            type : 'value'
+	            type : 'value',
+	            scale: true
 	        }
 	    ],
 	    series : [
