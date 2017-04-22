@@ -40,11 +40,11 @@
 </head>
 <body>
 <div class="navbar navbar-fixed-top navbar-inverse" >
-    <div class="container">
-        <a id="logo" href="#">社保大数据业务平台</a>
-        <nav>
-            <ul class="nav navbar-nav pull-right">
-            	<li class="dropdown">
+	    <div class="container" style="width: 1300px;">
+	        <a id="logo" href="#">社保大数据业务平台</a>
+	        <nav class="clearfix">
+	            <ul class="nav navbar-nav pull-right">
+	            	<li class="dropdown">
 	                	<a id="dLabel" data-target="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">用卡行为分析<span class="caret"></span></a>
 	                	<ul class="dropdown-menu multi-level" role="menu" aria-labelledby="dropdownMenu">
 		                			<li><a href="/mychart/vindex.html">挂号业务分析</a></li>
@@ -55,6 +55,7 @@
 									<li><a href="/mychart/chartExpense.html">医疗费用报销业务分析</a></li>
 									<li><a href="/mychart/Tsyl.html">特殊医疗待遇业务分析</a></li>
 									<li><a href="/mychart/clinic.html">门诊统筹申请业务分析</a></li>
+									<li><a href="/total/terminalanalysis.html">社保网点与用卡终端分析</a></li>
 	                	</ul>
 	                </li>
 	                <li class="dropdown">
@@ -68,37 +69,42 @@
 	                </li>
 	                
 	                <li class="dropdown">
+	                	<a id="dLabel" data-target="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">社会关系转移分析<span class="caret"></span></a>
+	                	<ul class="dropdown-menu multi-level" role="menu" aria-labelledby="dropdownMenu">
+		                			<li><a href="/social/staff.html">社会关系转移分析</a></li>
+									<li><a href="/social/map3d.html">柱状统计地图分析</a></li>
+	                	</ul>
+	                </li>
+	                
+	                <li class="dropdown">
+	                	<a id="dLabel" data-target="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">社医保药店分析<span class="caret"></span></a>
+	                	<ul class="dropdown-menu multi-level" role="menu" aria-labelledby="dropdownMenu">
+		                			<li><a href="/drugstore/dsindex.html">医保药店分析首页</a></li>
+									<li><a href="/drugstore/dslist.html">医保药店分析列表</a></li>
+	                	</ul>
+	                </li>
+	                
+					<li><a href="/list/allList.html">社保数据列表展示</a></li>
+					
+	                <li class="dropdown">
 	                	<a id="dLabel" data-target="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">业务综合分析<span class="caret"></span></a>
 	                	<ul class="dropdown-menu multi-level" role="menu" aria-labelledby="dropdownMenu">
 		                			<li><a href="/mychart/screen.html" target="_blank">挂号业务综合分析</a></li>
 									<li><a href="/company/maptest.html" target="_blank">就医服务综合分析</a></li>
 									<li><a href="/company/bigscreenshow.html" target="_blank">企业员工参保基数综合分析</a></li>
-									<li><a href="/company/industrydisplay.html">各行业社保参保基数综合分析</a></li>
+									<li><a href="/company/industrydisplay.html" target="_blank">各行业社保参保基数综合分析</a></li>
+									<li><a href="/social/ryldBigscreen.html" target="_blank">全国各城市人员流动综合分析</a></li>
+									<li><a href="/total/cardbigscreen.html" target="_blank">社保网点与终端综合分析</a></li>
+									<li><a href="/drugstore/bigscreends.html" target="_blank">医保药店综合分析</a></li>
 	                	</ul>
 	                </li>
-					<li><a href="/list/allList.html">社保数据列表展示</a></li>
-				<li><a href="/list/recommend.html" target="_blank">就业推荐</a></li>
-<!--                 <li><a href="vindex.html">挂号业务分析</a></li> -->
-<!--                 <li><a href="try.html">住院登记业务分析</a></li> -->
-<!--                 <li><a href="hos_2.html">就医服务业务分析</a></li> -->
-<!--                 <li><a href="vennindex.html">电子凭证业务分析</a></li> -->
-<!--                 <li><a href="extindex.html">异地就医申请业务分析</a></li> -->
-<!--                 <li><a href="chartExpense.html">医疗费用报销业务分析</a></li> -->
-<!--                 <li><a href="Tsyl.html">特殊医疗待遇业务分析</a></li> -->
-                <!-- 	                <li><a href="https://rubytutorial-jungieve.c9users.io/">主页</a></li> -->
-                <!-- 	                <li><a href="https://rubytutorial-jungieve.c9users.io/help">帮助</a></li> -->
-                <!-- 	                <li><a href="/ETL/html/index.html">预处理</a></li> -->
-                <!-- 	                <li><a href="/olap/">OLAP分析</a></li> -->
-                <!-- 	                <li><a href="/openreports/">报表展示</a></li> -->
-                <!-- 	                <li><a href="/mychart/test.html">业务样例</a></li> -->
-                <!-- 	                <li><a href="https://rubytutorial-jungieve.c9users.io/users">其他成员</a></li> -->
-                <!-- 	                <li class="dropdown"> -->
-                <!-- 	                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">账户</a> -->
-                <!-- 	                </li> -->
-            </ul>
-        </nav>
-    </div>
-</div>
+	                
+					<li><a href="/list/recommend.html" target="_blank">就业推荐</a></li>
+
+	            </ul>
+	        </nav>
+	    </div>
+	</div>
 
 <!-- 图表展示与控制容器 -->
 <div class="scut-container">

@@ -214,3 +214,11 @@
     -webkit-transform: scaleY(1.0);
   }
 }
+
+.navbar-inverse .navbar-nav > li > a {
+	color: #fff;
+}
+
+.navbar-inverse .navbar-nav > li > a:hover {
+	color: #F0AD4E;
+}
