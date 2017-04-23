@@ -105,7 +105,7 @@ public class ProofServiceImpl implements ProofService {
         }
 
         option.options(optionlist);
-        System.out.println(option.toString());
+//        System.out.println(option.toString());
         return option.toString();
     }
 
