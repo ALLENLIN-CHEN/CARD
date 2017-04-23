@@ -97,7 +97,8 @@ body {
     height: 80px;
     z-index: 1111;
     font-size: 6em;
-    color: #4d63bc;
+    color: #fff;
+/*     color: #4d63bc; */
 }
 
 .wrap-line-title {
